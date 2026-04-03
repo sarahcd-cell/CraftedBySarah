@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HelloFresh and Factor CC Spiel Guide & KIRO Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Global Dark UI Palette */
+    --gray-bg: #0d1117;      /* Main App Background */
+    --gray-border: #30363d;  /* Universal Borders */
+    --gray-text: #8b949e;    /* Muted Labels & Subtext */
+    --gray-light: #21262d;   /* Subtle Hover/Input Backgrounds */
+    --white: #161b22;        /* Main Card/Container Backgrounds */
+    --black: #c9d1d9;        /* Primary Readable Text */
+
+    /* Dynamic Region Palettes (Dark Mode Adapted) */
+    
+    /* SME Sarah (Deep Pink Accent) */
+    --smesarah-bg: #381124;      
+    --smesarah-light: #1f0a14;   
+    --smesarah-border: #f472b6;  
+    --smesarah-text: #fce7f3;    
+
+    /* Nordics (Deep Blue Accent) */
+    --nordics-bg: #0f1c3f;
+    --nordics-light: #060e24;
+    --nordics-border: #60a5fa;
+    --nordics-text: #dbeafe;
+
+    /* DACH (Deep Red Accent) */
+    --dach-bg: #3d1414;
+    --dach-light: #200808;
+    --dach-border: #f87171;
+    --dach-text: #fee2e2;
+
+    /* Benelux (Deep Green Accent) */
+    --benelux-bg: #0d3826;
+    --benelux-light: #051a11;
+    --benelux-border: #34d399;
+    --benelux-text: #d1fae5;
+    
+    /* FACTOR DE (Charcoal/Crimson Accent) */
+    --factorde-bg: #212121;
+    --factorde-light: #141414;
+    --factorde-border: #ef4444;
+    --factorde-text: #f3f4f6;
+
+    /* FACTOR DK (Deep Indigo Accent) */
+    --factordk-bg: #1e1b4b;
+    --factordk-light: #0f0b29;
+    --factordk-border: #818cf8;
+    --factordk-text: #e0e7ff;
+
+    /* FACTOR SE (Burgundy/Fuchsia Accent) */
+    --factorse-bg: #4a1029;
+    --factorse-light: #250814;
+    --factorse-border: #e879f9;
+    --factorse-text: #fae8ff;
+    
+    /* SAHWRAP AI (Dark Violet Accent) */
+    --sahwrap-bg: #2e1065;
+    --sahwrap-light: #170833;
+    --sahwrap-border: #a855f7;
+    --sahwrap-text: #ede9fe;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Public Sans', system-ui, sans-serif;
+    background: var(--gray-bg);
+    color: var(--black);
+    font-size: 14px;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  .header {
+    background: var(--theme-bg);
+    color: var(--theme-text);
+    padding: 18px 30px 0;
+    border-bottom: 2px solid var(--theme-border);
+    transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+    position: relative;
+  }
+  .headerTop {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .logo {
+    background: var(--white);
+    color: var(--theme-border);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 2px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--theme-border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: color 0.4s ease, border-color 0.4s ease;
+    text-transform: uppercase;
+  }
+  .headerTitle {
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .headerSub {
+    font-size: 13px;
+    margin-left: auto;
+    color: #e2e8f0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+  }
+  .headerSub .sep {
+    opacity: 0.3;
+    margin: 0 10px;
+  }
+  
+  /* Last Edited Label */
+  .lastEdited {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+  }
+
+  .countryTabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    margin-bottom: -2px; /* Pull down over header border */
+  }
+  .ctab {
+    padding: 12px 20px;
+    border: 2px solid transparent;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,0,0,0.25);
+    color: rgba(255,255,255,0.5);
+    font-family: inherit;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+  }
+  .ctab:hover { 
+    background: rgba(0,0,0,0.4); 
+    color: rgba(255,255,255,0.8); 
+  }
+  .ctab.active {
+    background: var(--gray-bg);
+    color: var(--theme-border);
+    border-color: var(--theme-border);
+  }
+
+  .main {
+    display: flex;
+    height: calc(100vh - 105px);
+    overflow: hidden;
+  }
+
+  .sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--white);
+    border-right: 1px solid var(--gray-border);
+    overflow-y: auto;
+    padding: 24px 0;
+    z-index: 5;
+  }
+  .sidebarSection {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--gray-text);
+    padding: 14px 24px 8px;
+    text-transform: uppercase;
+  }
+  .sidebarItem {
+    display: block;
+    padding: 12px 24px;
+    font-size: 14px;
+    cursor: pointer;
+    color: var(--black);
+    border-left: 4px solid transparent;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+  }
+  .sidebarItem:hover { 
+    background: var(--gray-light); 
+    color: var(--theme-border); 
+  }
+  .sidebarItem.active { 
+    background: var(--theme-light); 
+    border-left-color: var(--theme-border); 
+    color: var(--theme-border); 
+    font-weight: 700; 
+  }
+
+  .content { flex: 1; overflow-y: auto; padding: 0; background: var(--gray-bg); }
+
+  .policyBar { background: var(--gray-bg); border-bottom: 1px solid var(--gray-border); padding: 20px 24px; display: none; }
+  .policyBar.active { display: block; }
+  .policyGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 20px; }
+  .policyCell { background: var(--white); border-radius: 8px; padding: 16px; border: 1px solid var(--gray-border); transition: border-color 0.3s; }
+  .policyCell:hover { border-color: var(--theme-border); }
+  .policyLabel { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-text); margin-bottom: 6px; }
+  .policyValue { font-size: 14px; font-weight: 600; color: var(--black); line-height: 1.5; }
+  .policyNote { font-size: 13px; color: var(--black); margin-top: 20px; background: var(--theme-light); border-left: 4px solid var(--theme-border); padding: 12px 18px; border-radius: 0 8px 8px 0; font-weight: 500; }
+  .barTitle { font-size: 15px; font-weight: 700; color: var(--theme-border); text-transform: uppercase; letter-spacing: 1.5px; display: flex; align-items: center; gap: 10px; }
+
+  .panelWrap { padding: 32px 36px 80px; display: none; }
+  .panelWrap.active { display: block; }
+
+  .spielSection { margin-bottom: 24px; background: var(--white); border-radius: 10px; border: 1px solid var(--gray-border); overflow: hidden; }
+  .sectionHeader { display: flex; align-items: center; gap: 16px; padding: 18px 24px; cursor: pointer; background: var(--white); margin-bottom: 0; transition: background 0.3s; }
+  .sectionHeader:hover { background: var(--gray-light); }
+  .sectionHeader .icon { width: 34px; height: 34px; border-radius: 8px; background: var(--theme-light); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--theme-border); flex-shrink: 0; transition: background 0.4s, color 0.4s; }
+  .sectionHeader h2 { font-size: 15px; font-weight: 700; color: var(--black); text-transform: uppercase; letter-spacing: 1px; flex: 1; }
+  .sectionHeader .chevron { font-size: 12px; color: var(--gray-text); transition: transform 0.3s ease; }
+  .sectionHeader.open { border-bottom: 1px solid var(--gray-border); }
+  .sectionHeader.open .chevron { transform: rotate(180deg); }
+
+  .sectionBody { display: none; padding: 24px; gap: 16px; flex-direction: column; background: var(--gray-bg); }
+  .sectionBody.open { display: flex; }
+
+  .spielCard { background: var(--white); border: 1px solid var(--gray-border); border-radius: 8px; padding: 20px 24px; position: relative; transition: transform 0.2s ease, border-color 0.2s ease; }
+  .spielCard:hover { transform: translateY(-2px); border-color: var(--theme-border); }
+  .spielLabel { font-size: 11.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gray-text); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .tag { display: inline-block; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.5px; background: var(--theme-light); color: var(--theme-border); border: 1px solid var(--theme-border); }
+  .spielText { font-size: 14.5px; line-height: 1.7; color: var(--black); white-space: pre-wrap; padding-right: 70px; }
+  
+  /* Dynamic placeholder matches the active theme */
+  .placeholder { background: var(--theme-light); border: 1px solid var(--theme-border); border-radius: 4px; padding: 2px 6px; font-weight: 600; font-style: normal; color: var(--theme-border); font-size: 13.5px; display: inline-block; }
+  
+  .copyBtn { position: absolute; top: 20px; right: 24px; background: var(--gray-light); border: 1px solid var(--gray-border); border-radius: 6px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--gray-text); cursor: pointer; font-family: inherit; transition: all 0.2s ease; }
+  .copyBtn:hover { background: var(--theme-border); border-color: var(--theme-border); color: #111827; }
+  .copyBtn.copied { background: #10b981; color: #fff; border-color: #10b981; }
+  
+  .searchBar { display: flex; align-items: center; gap: 12px; padding: 24px 36px; background: rgba(13, 17, 23, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--gray-border); position: sticky; top: 0; z-index: 10; }
+  .searchBar input { flex: 1; border: 1px solid var(--gray-border); border-radius: 8px; padding: 14px 20px; font-size: 15px; font-family: inherit; background: var(--gray-light); color: var(--black); outline: none; transition: all 0.3s ease; }
+  .searchBar input:focus { border-color: var(--theme-border); box-shadow: 0 0 0 3px var(--theme-light); }
+  .noResults { text-align: center; color: var(--gray-text); padding: 80px; font-size: 15px; display: none; font-weight: 500; }
+
+  /* Tab local time display */
+  .ctabTime { font-size: 10px; font-weight: 600; opacity: 0.7; letter-spacing: 0; display: block; line-height: 1.2; margin-top: 1px; }
+  .ctab { flex-direction: column; align-items: flex-start; padding: 10px 18px; }
+  .ctabLabel { font-size: 13px; font-weight: 700; letter-spacing: 0.5px; }
+
+  /* Affirmation Banner */
+  .affirmationBanner { margin-top: 24px; background: var(--white); border: 1px solid var(--gray-border); border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+  .affirmationBannerTitle { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-text); display: flex; align-items: center; gap: 8px; }
+  .affirmationRotate { display: flex; align-items: center; gap: 12px; }
+  .affirmationHighlight { flex: 1; background: var(--theme-light); border: 1px solid var(--theme-border); border-radius: 8px; padding: 14px 20px; font-size: 14px; font-weight: 600; color: var(--theme-border); text-align: center; letter-spacing: 0.2px; line-height: 1.5; animation: fadeQuote 0.8s ease; }
+  .affirmationNavBtn { background: var(--gray-light); border: 1px solid var(--gray-border); border-radius: 6px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; color: var(--gray-text); flex-shrink: 0; transition: background 0.2s, color 0.2s; font-family: inherit; }
+  .affirmationNavBtn:hover { background: var(--theme-border); color: #111827; }
+  
+  /* 5-Box Grid Layout (4 Trays + 1 Unified Clock) */
+  .smeBoxGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 8px; }
+  
+  /* Ensure all 5 boxes share exact dimensions and styling */
+  .smeBox { 
+    background: var(--white);
+    border-radius: 8px; 
+    padding: 18px; 
+    border: 1px solid var(--gray-border); 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+    transition: transform 0.2s ease, border-color 0.2s ease;
+    min-height: 140px; /* Force consistent height */
+  }
+  .smeBox:hover { transform: translateY(-2px); border-color: var(--theme-border); }
+  
+  /* Muted Color Accents for Boxes on Dark Theme */
+  .smeBox-affirm  { border-top: 3px solid #818cf8; } /* Indigo */
+  .smeBox-mindset { border-top: 3px solid #f472b6; } /* Pink */
+  .smeBox-reminder{ border-top: 3px solid #34d399; } /* Green */
+  .smeBox-tip     { border-top: 3px solid #fbbf24; } /* Amber */
+  .smeBox-clock   { border-top: 3px solid #60a5fa; } /* Blue */
+
+  @media (max-width: 1400px) { .smeBoxGrid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 900px) { .smeBoxGrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .smeBoxGrid { grid-template-columns: 1fr; } }
+
+  .smeBoxLabel { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gray-text); display: flex; align-items: center; gap: 6px; }
+  .smeBoxText { font-size: 13.5px; line-height: 1.6; color: var(--black); font-weight: 500; flex: 1; }
+
+  /* Unified World Clock Internal Layout */
+  .clockContainer { display: flex; flex-direction: column; gap: 6px; flex: 1; justify-content: center; }
+  .clockRow { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px dashed var(--gray-border); padding-bottom: 4px; margin-bottom: 2px; }
+  .clockRow:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .clockInitials { font-size: 11px; font-weight: 700; color: var(--gray-text); width: 30px; }
+  .clockTime { font-size: 13.5px; font-weight: 600; color: var(--theme-border); font-variant-numeric: tabular-nums; letter-spacing: 0.5px; text-align: right; }
+
+  /* ========================================================
+     SAHWRAP AI GENERATOR (Dark Mode Native UI)
+     ======================================================== */
+  .sahwrap-wrapper { max-width: 650px; margin: 0 auto; font-family: 'Quicksand', sans-serif; background: transparent; padding: 24px; }
+  .sahwrap-card { background: var(--white); border: 1px solid var(--gray-border); border-radius: 16px; padding: 30px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+  .sahwrap-title { color: var(--sahwrap-border); font-size: 22px; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; }
+  .sahwrap-label { color: var(--gray-text); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; text-align: left; display: block; }
+  
+  .sahwrap-textarea { width: 100%; box-sizing: border-box; background: var(--gray-bg); border: 1px solid var(--gray-border); border-radius: 12px; padding: 16px; height: 140px; resize: none; font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 14px; color: var(--black); outline: none; margin-bottom: 20px; transition: border-color 0.2s; }
+  .sahwrap-textarea:focus { border-color: var(--sahwrap-border); background: var(--gray-light); }
+  
+  .sahwrap-btn-action { width: 100%; background: #10b981; color: white; border: none; border-radius: 12px; padding: 14px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.2s; font-family: 'Quicksand', sans-serif; margin-bottom: 20px; }
+  .sahwrap-btn-action:hover:not(:disabled) { background: #059669; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+  .sahwrap-btn-action:disabled { background: var(--gray-border); color: var(--gray-text); cursor: not-allowed; transform: none; box-shadow: none; }
+  
+  .sahwrap-output { background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 20px; text-align: left; font-size: 14.5px; color: var(--black); white-space: pre-wrap; display: none; margin-bottom: 20px; line-height: 1.6; font-weight: 500; }
+  
+  .sahwrap-btn-copy { width: 100%; background: transparent; color: var(--sahwrap-border); border: 1px solid var(--sahwrap-border); border-radius: 12px; padding: 14px; font-weight: 700; font-size: 15px; cursor: pointer; display: none; transition: 0.2s; font-family: 'Quicksand', sans-serif; }
+  .sahwrap-btn-copy:hover { background: var(--sahwrap-border); color: #fff; }
+  
+  .sahwrap-reset { color: var(--gray-text); font-size: 13px; font-weight: 600; text-decoration: underline; cursor: pointer; margin-top: 12px; display: inline-block; transition: color 0.2s; }
+  .sahwrap-reset:hover { color: var(--black); }
+</style>
+</head>
+<body class="theme-dark">
+
+<div class="header">
+  <div class="headerTop">
+    <div class="logo" id="mainLogo" style="display: none;">HELLOFRESH</div>
+    <div class="headerTitle">Customer Care Spiel Guide</div>
+    <div class="headerSub">
+      Property of SME Sarah <span class="sep">|</span> Internal Use Only <span class="sep">|</span> <span class="lastEdited" id="lastEditedLabel">LAST EDITED: 03 APR 2026</span>
+    </div>
+  </div>
+  <div class="countryTabs">
+    <button class="ctab active" onclick="switchRegion('smesarah')"><span class="ctabLabel">SME Sarah</span><span class="ctabTime" id="tab-time-smesarah"></span></button>
+    <button class="ctab" onclick="switchRegion('nordics')"><span class="ctabLabel">NORDICS</span><span class="ctabTime" id="tab-time-nordics"></span></button>
+    <button class="ctab" onclick="switchRegion('dach')"><span class="ctabLabel">DACH</span><span class="ctabTime" id="tab-time-dach"></span></button>
+    <button class="ctab" onclick="switchRegion('benelux')"><span class="ctabLabel">BENELUX</span><span class="ctabTime" id="tab-time-benelux"></span></button>
+    <button class="ctab" data-region="factorde" onclick="switchRegion('factorde')"><span class="ctabLabel">FACTOR DE</span><span class="ctabTime" id="tab-time-factorde"></span></button>
+    <button class="ctab" data-region="factordk" onclick="switchRegion('factordk')"><span class="ctabLabel">FACTOR DK</span><span class="ctabTime" id="tab-time-factordk"></span></button>
+    <button class="ctab" data-region="factorse" onclick="switchRegion('factorse')"><span class="ctabLabel">FACTOR SE</span><span class="ctabTime" id="tab-time-factorse"></span></button>
+    <button class="ctab" style="margin-left: 12px; border-left: 1px solid rgba(255,255,255,0.1);" data-region="sahwrap" onclick="switchRegion('sahwrap')"><span class="ctabLabel">✨ KIRO AI</span></button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="sidebar" id="sidebar"></div>
+
+  <div class="content">
+
+    <div class="policyBar active" id="policySmesarah">
+      <div class="affirmationBanner">
+        <div class="affirmationBannerTitle">✨ Focus Area</div>
+        <div class="affirmationRotate">
+          <button class="affirmationNavBtn" onclick="prevQuote()">&#8592;</button>
+          <div class="affirmationHighlight" id="affirmationQuote"></div>
+          <button class="affirmationNavBtn" onclick="nextQuote()">&#8594;</button>
+        </div>
+        
+        <div class="smeBoxGrid">
+          
+          <div class="smeBox smeBox-affirm">
+            <div class="smeBoxLabel">✦ Affirmation</div>
+            <div class="smeBoxText">I am calm, I am capable, and I handle every case with care. I know my spiels. I know my policies. I am prepared.</div>
+          </div>
+          
+          <div class="smeBox smeBox-mindset">
+            <div class="smeBoxLabel">🧠 Mindset</div>
+            <div class="smeBoxText">A frustrated customer does not mean a bad day. It means someone needs your help. You cannot control their mood, but you control your response.</div>
+          </div>
+          
+          <div class="smeBox smeBox-reminder">
+            <div class="smeBoxLabel">📌 Reminder</div>
+            <div class="smeBoxText">Check the account before quoting anything. Every time, no exceptions. Policy is your protection, not your enemy. Use it with confidence.</div>
+          </div>
+          
+          <div class="smeBox smeBox-tip">
+            <div class="smeBoxLabel">💡 SME Tip</div>
+            <div class="smeBoxText">Empathy opens doors. Policy closes cases. Use both. If the deadline has passed, escalate with kindness, not apologies for the policy.</div>
+          </div>
+          
+          <div class="smeBox smeBox-clock">
+            <div class="smeBoxLabel">🌍 World Clock</div>
+            <div class="clockContainer">
+              <div class="clockRow"><span class="clockInitials">PH</span><span class="clockTime" id="clock-ph"></span></div>
+              <div class="clockRow"><span class="clockInitials">DE</span><span class="clockTime" id="clock-de"></span></div>
+              <div class="clockRow"><span class="clockInitials">DK</span><span class="clockTime" id="clock-dk"></span></div>
+              <div class="clockRow"><span class="clockInitials">SE</span><span class="clockTime" id="clock-se"></span></div>
+              <div class="clockRow"><span class="clockInitials">NL</span><span class="clockTime" id="clock-nl"></span></div>
+              <div class="clockRow"><span class="clockInitials">BE</span><span class="clockTime" id="clock-be"></span></div>
+              <div class="clockRow"><span class="clockInitials">AT</span><span class="clockTime" id="clock-at"></span></div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <div class="policyBar" id="policyNordics"><div class="barTitle">NORDICS Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Deadline Sat/Sun delivery</div><div class="policyValue">Tuesday 23:59 the week prior</div></div><div class="policyCell"><div class="policyLabel">Norway Delivery</div><div class="policyValue">7 days of the week</div></div><div class="policyCell"><div class="policyLabel">Denmark Payment</div><div class="policyValue">Klarna, Visa, Mastercard, PayPal</div></div><div class="policyCell"><div class="policyLabel">Sweden Delivery Fee</div><div class="policyValue">49 SEK per box</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Always verify the customer specific deadline and delivery day in the account before quoting any details. Deadlines vary by country.</div></div>
+    <div class="policyBar" id="policyDach"><div class="barTitle">DACH Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Germany Delivery</div><div class="policyValue">Usually Mon to Sat, varies by region</div></div><div class="policyCell"><div class="policyLabel">AT and CH Delivery</div><div class="policyValue">Mon to Wed, Fri (AT) / Mon to Wed (CH)</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Usually Wed 23:59 or Fri 23:59 based on delivery day</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">SEPA, PayPal, Credit Card, Klarna</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Please verify specific DACH cutoffs per customer account as they strictly depend on the chosen delivery day and region.</div></div>
+    <div class="policyBar" id="policyBenelux"><div class="barTitle">BENELUX Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Order Deadline NL</div><div class="policyValue">For Sat/Sun/Mon boxes: Wednesday 23:59</div></div><div class="policyCell"><div class="policyLabel">Delivery Days NL</div><div class="policyValue">Saturday to Thursday. No Fridays.</div></div><div class="policyCell"><div class="policyLabel">Delivery Days BE</div><div class="policyValue">Varies by postcode. Check account.</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days, based on bank.</div></div><div class="policyCell"><div class="policyLabel">Payment NL</div><div class="policyValue">iDEAL for first order, then auto debit.</div></div></div><div class="policyNote">📌 Always verify the customer specific deadline in the account before quoting any date or amount.</div></div>
+    <div class="policyBar" id="policyFactorde"><div class="barTitle">FACTOR GERMANY Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Website</div><div class="policyValue">factormeals.de</div></div><div class="policyCell"><div class="policyLabel">Currency</div><div class="policyValue">EUR</div></div><div class="policyCell"><div class="policyLabel">Delivery Days</div><div class="policyValue">Check customer account</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Verify in account before quoting</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">Credit/Debit Card, PayPal, Klarna</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Always check the customer individual account for their exact deadline, delivery day, and delivery address before quoting any details. Info varies per customer.</div></div>
+    <div class="policyBar" id="policyFactordk"><div class="barTitle">FACTOR DENMARK Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Website</div><div class="policyValue">factormeals.dk</div></div><div class="policyCell"><div class="policyLabel">Currency</div><div class="policyValue">DKK</div></div><div class="policyCell"><div class="policyLabel">Language</div><div class="policyValue">English (warm, direct)</div></div><div class="policyCell"><div class="policyLabel">Delivery Days</div><div class="policyValue">Check customer account</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Verify in account before quoting</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">Klarna, Visa, Mastercard, PayPal</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Danish customers tend to be direct and value transparency. Keep things honest and to the point. Always verify account details before quoting deadlines or charges.</div></div>
+    <div class="policyBar" id="policyFactorse"><div class="barTitle">FACTOR SWEDEN Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Website</div><div class="policyValue">factormeals.se</div></div><div class="policyCell"><div class="policyLabel">Currency</div><div class="policyValue">SEK</div></div><div class="policyCell"><div class="policyLabel">Language</div><div class="policyValue">English (calm, courteous)</div></div><div class="policyCell"><div class="policyLabel">Delivery Days</div><div class="policyValue">Check customer account</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Verify in account before quoting</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">Klarna, Visa, Mastercard, PayPal</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Swedish customers appreciate calm, structured communication. Be clear about processes. Always check the individual account before referencing any deadlines, charges, or plans.</div></div>
+    
+    <div class="policyBar" id="policySahwrap">
+      <div class="barTitle">🤖 KIRO Note Generator</div>
+      <div class="policyNote">📌 Paste your raw customer chat below to instantly generate a KIRO note based strictly on the Nordics Wrap Codes.</div>
+    </div>
+
+    <div class="searchBar" id="mainSearchBar">
+      <input type="text" id="searchInput" placeholder="Search spiels" oninput="filterSpiels()"/>
+    </div>
+
+    <div id="noResults" class="noResults">No matching spiels found.</div>
+
+    <div class="panelWrap active" id="panelSmesarah"></div>
+    <div class="panelWrap" id="panelNordics"></div>
+    <div class="panelWrap" id="panelDach"></div>
+    <div class="panelWrap" id="panelBenelux"></div>
+    <div class="panelWrap" id="panelFactorde"></div>
+    <div class="panelWrap" id="panelFactordk"></div>
+    <div class="panelWrap" id="panelFactorse"></div>
+    
+    <div class="panelWrap" id="panelSahwrap">
+      <div class="sahwrap-wrapper">
+        <div class="sahwrap-card">
+          <div class="sahwrap-title">✨ KIRO Generator ✨</div>
+          <span class="sahwrap-label">Paste Chat Interaction</span>
+          <textarea id="chatInput" class="sahwrap-textarea" placeholder="Paste the customer's chat or query here..."></textarea>
+          
+          <button class="sahwrap-btn-action" id="kiroBtn" onclick="generateKiro()">✨ Generate KIRO Notes!</button>
+          
+          <div id="aiLoading" style="color: #10b981; font-style: italic; font-weight: 600; font-size: 14px; display: none; margin-bottom: 20px; text-align: center;">Analyzing chat context... ✨</div>
+          <div id="aiOutput" class="sahwrap-output"></div>
+          
+          <button class="sahwrap-btn-copy" id="copyAiBtn" onclick="copyAiText()">Grab My Notes! 💖</button>
+          <div class="sahwrap-reset" onclick="resetAIUI()">Clear Chat & Reset</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// =====================
+// UNIVERSAL SPIELS
+// =====================
+const universalOpening = [
+  { label: "No Context", tag: "greeting", text: `Hi there, welcome to HelloFresh! I am [Name], great to have you with us. I can see you are reaching out about your [subscription / delivery / payment / account / meals]. Could you tell me a bit more about what you need help with today?` }
+];
+const universalVerification = [
+  { label: "Two Data Points", tag: "action", text: `To make sure I can access your account and help you properly, could you please share your full delivery address, including your street name and postcode, along with your email address? And just to confirm, am I speaking with the account holder? A simple yes or no is perfect.` },
+  { label: "Request Time", tag: "action", text: `Thank you so much for that! Just give me a moment to take a good look at your account. I appreciate your patience, I am just pulling everything up now so I can give you the right answer.` }
+];
+const universalCancellation = [
+  { label: "Missed Deadline", tag: "action", text: `Thank you for reaching out to HelloFresh! I am [Name] and I am sorry to hear you would like to cancel your order. Quick heads up about how our deadline works: the cutoff depends on your delivery day. Let me take a look at your account to see where things stand and what options we might still have for you.` },
+  { label: "Account Cancellation", tag: "close", text: `Thank you for contacting HelloFresh. I am [Name], and I am genuinely sorry to hear you would like to close your account, it has been such a pleasure having you with us! You can cancel anytime by logging into your account, going to Account Settings, scrolling to the bottom of the page, and clicking Cancel Plan.` },
+  { label: "Retention Attempt", tag: "retention", text: `I am sorry to hear you are thinking about leaving us. Before I proceed, would you be comfortable sharing what led to this decision? We would really love to keep you with us if we can! That said, I completely respect your decision.` }
+];
+const universalAfterDeadline = [
+  { label: "Unexpected Charge", tag: "empathy", text: `I am really sorry this charge caught you off guard, I can imagine how confusing and frustrating that must feel. I completely understand why you are reaching out, and I want to explain exactly what happened. Let me take a moment to check your account so I can walk you through it clearly and quickly.` },
+  { label: "Cannot Cancel", tag: "action", text: `Thank you so much for your patience while I checked! I can confirm your subscription is active and your delivery for [date] is already on its way. Because your personal cutoff deadline has now passed, we are unfortunately not able to modify or cancel this box anymore.` },
+  { label: "Goodwill Gesture", tag: "action", text: `After having a thorough look at your account, I am not able to change the order itself, but I can cancel it and arrange a [credit / refund] for you as a goodwill gesture. Would you like me to go ahead with that?` }
+];
+const universalLogistics = [
+  { label: "Failed Delivery", tag: "empathy", text: `Thank you so much for your patience, I am truly sorry to let you know that your box will not be arriving today. This is completely unacceptable, and I want you to know I have already escalated this to our team to investigate what went wrong.` },
+  { label: "Delivery Time Slot", tag: "info", text: `Thank you for your patience! HelloFresh works with delivery windows rather than exact arrival times, so there can sometimes be a bit of variation. Your window for today is [time slot]. If your box has not arrived by the end of that window, please reach out straight away and I will follow up for you immediately.` }
+];
+const universalQuality = [
+  { label: "Food Safety Opening", tag: "empathy", text: `Hello, welcome to HelloFresh! I am [Name], and I want to sincerely thank you for reaching out about this. Your health and safety are our absolute priority, and I am truly sorry to hear you have been feeling unwell after eating one of our meals. To help us investigate this properly, would you be able to share any photos or additional details about the situation?` },
+  { label: "Missing Ingredients", tag: "empathy", text: `I am really sorry some of your ingredients were missing, I know how frustrating that is, especially when you have been looking forward to cooking a specific meal. This is exactly how we find and fix these kinds of issues, and I am reporting it to our kitchen team right now.` }
+];
+const universalDifficult = [
+  { label: "Threatening Bad Review", tag: "empathy", text: `I hear you, and I genuinely wish I could give you a different answer. You absolutely have every right to share your experience, and I respect that completely. If you do, I would only ask that you include the full picture, including that this request came in after your personal deadline had already passed, as that is the reason I am not able to make the change.` },
+  { label: "Profanity", tag: "empathy", text: `I can really hear how frustrated you are, and I genuinely want to help you. I have been doing my very best here for you. I do need to kindly ask that we keep our conversation respectful so we can focus on finding the best solution together.` }
+];
+const universalClosing = [
+  { label: "Positive Close", tag: "close", text: `You are so welcome! I really hope that helped. If there is ever anything else you need, do not hesitate to reach out, we are always happy to hear from you.` },
+  { label: "Warm Close", tag: "close", text: `It was a pleasure helping you today! I hope your next HelloFresh box is everything you are looking forward to. Take care, and enjoy your meals!` },
+  { label: "Survey Resolved", tag: "close", text: `You are very welcome. I am really glad I could help you today.\n\nYou may see a quick survey pop up about your experience. It only takes a few seconds to complete. The rating goes from 1 (not satisfied) to 5 (very satisfied), and if everything was resolved for you, a rating of 5 really helps us know we did things right and means a lot to our team.\n\nThanks again for your time. We appreciate you.` },
+  { label: "Survey Unresolved", tag: "close", text: `We are really sorry we could not fully resolve your concern today, but thank you for your patience and for giving us the chance to assist you.\n\nYou may see a quick survey pop up about your experience. It only takes a few seconds to complete. The rating goes from 1 (not satisfied) to 5 (very satisfied), and your honest feedback helps us understand where we need to improve and do better next time.\n\nWe truly appreciate your time and understanding.` }
+];
+
+// =====================
+// SME SARAH SPIELS
+// =====================
+const smesarahOpening = [
+  { label: "No Customer Journey 1", tag: "greeting", text: `Hello, welcome to [specific market] Customer Service! I hope you are doing well. My name is [Name], and I am here to help. What can I assist you with today?` },
+  { label: "No Customer Journey 2", tag: "greeting", text: `Hi there, and welcome to [specific market]! I hope you are doing well. I am [Name], and I see you are reaching out about something related to your cancellation, delivery, payment, account, or meals. I am here to help. Could you please let me know exactly what you need assistance with today?` }
+];
+const smesarahVerification = [
+  { label: "Two Data Points", tag: "action", text: `To help you better and access your account, please provide your full delivery address, including street name and postal code, along with your email address. Also, could you please confirm that I am speaking with the account holder by answering yes or no?` },
+  { label: "One Data Point", tag: "action", text: `To help you better and access your account, please provide your full delivery address, including street name and postal code. Also, could you please confirm that I am speaking with the account holder by answering yes or no?` },
+  { label: "Request Time 1", tag: "action", text: `Thank you for sharing your account information. I will take a moment to review it carefully.` },
+  { label: "Request Time 2", tag: "action", text: `I appreciate you providing your account details. Please bear with me while I check into this.` },
+  { label: "Not Account Holder", tag: "info", text: `Thank you for providing the details. Unfortunately, we are unable to access the account without the account holder's knowledge or explicit permission. Please have the account holder reach out to us via chat or by calling 020 7138 9055, and we will be happy to assist.` }
+];
+const smesarahCancellation = [
+  { label: "Missed Deadline 1", tag: "empathy", text: `Thank you for contacting [specific market] Customer Service. I hope you are doing well today. My name is [Name], and I am sorry to hear you would like to cancel your order. Just a quick reminder: the deadline for cancellations or changes is [specific deadline or always check deadlines on shelf]. That said, let me check to see if there is still something we can do to cancel this order for you.` },
+  { label: "Missed Deadline 2", tag: "empathy", text: `Hi there, this is [Name] from [specific market]. Thanks for reaching out today. I understand you would like to cancel your order. I will do my best to help. Just a quick reminder, the cutoff for changes or cancellations is [specific deadline or always check deadlines on shelf]. After that, orders begin processing, so changes are typically no longer possible. That said, let me check the status of your order.` },
+  { label: "Account Cancellation", tag: "action", text: `Thank you for contacting [specific market]. I hope you are doing well today. My name is [Name], and I am really sorry to hear that you would like to close your account and discontinue the service. It has truly been a pleasure having you with us, and I am here to help make this process as easy and straightforward as possible for you.` },
+  { label: "Cancel First Box Status", tag: "info", text: `Here at [specific market], when signing up, an initial order is placed right away with pre-selected meals and a set delivery date. This order does not get cancelled automatically when the subscription is cancelled. Only we can manually stop it.` },
+  { label: "First Box Cancelled", tag: "action", text: `I have successfully cancelled your first box as requested. If you get an SMS or email on the delivery day, you can ignore it. I have manually cancelled both the order and the payment. No deliveries will be made unless you reactivate your account and place a new order.` },
+  { label: "Canceled with Confirmation", tag: "close", text: `We are sorry to see you go and truly appreciate your time with us. We completely respect your decision. Your subscription has now been canceled, and you will receive an email confirmation shortly. Please note that any active discounts have also been forfeited. Just a reminder, [specific market] does not require contracts, so you are always welcome to come back.` }
+];
+const smesarahAfterDeadline = [
+  { label: "Unexpected Charge", tag: "empathy", text: `I am really sorry for the charge and order notification you did not expect. I completely understand how unsettling this must feel. Let me take a moment to review your account and explain why this charge appeared, along with the delivery details. I appreciate your time and will keep this quick and straightforward.` },
+  { label: "Cannot Cancel Box", tag: "info", text: `Thank you so much for your patience while I looked into this for you. I can confirm that your subscription is still active, and your delivery for [Date] is on schedule. Since it was not skipped or canceled, the charge of [Amount] was processed. I truly wish I could make changes for you, but unfortunately the deadline passed on [specific deadline or always check deadlines on shelf], so we are unable to modify or cancel it at this point.` },
+  { label: "One Time Exception", tag: "action", text: `Thank you for waiting. I cannot make changes to your order, but I can cancel it and arrange a [credit or refund]. Let me know if you would like to proceed. I am happy to help! While processing your request, I must inform you that all future order management must be done through the My Menu page before the [specific deadline or always check deadlines on shelf].` },
+  { label: "Refund Confirmation", tag: "info", text: `Your box has been cancelled and refunded [Amount]. The refund will take 3 to 5 business days to appear, depending on your bank processing. Note that this deadline exception was granted as a one-time courtesy. Future cancellations must be made before the deadline.` }
+];
+const smesarahLogistics = [
+  { label: "Failed Delivery", tag: "empathy", text: `Thank you for contacting [specific market] Customer Service. I hope you are doing well. My name is [Name], and I am here to help you with your delivery concerns. I am really sorry about the delay with your box. I know how important it is to get your package on time. Please give me a moment to check with the [specific market] Logistics Team, and I will update you on the status of your delivery.` },
+  { label: "Refund with Compensation", tag: "action", text: `I have gone ahead and processed your refund right away. You should see the money back in your account within 3 to 5 business days, depending on your bank policies. I have also added a [Amount] credit to your [specific market] account as a small way to show how genuinely sorry we are.` },
+  { label: "Time Slot Policy", tag: "info", text: `We follow delivery time slots, but we do not get an exact delivery time from our couriers, so sometimes boxes can arrive a bit earlier or later than expected. If your box has not arrived by 6:00 PM the day after your scheduled delivery, please let me know right away and I will make sure we follow up for you.` },
+  { label: "Leave Safe Not Followed", tag: "empathy", text: `Thank you for bringing this matter to our attention, and I want to extend my sincere apologies if our driver did not adhere to your instructions. I understand that you specifically requested your package to be left at a certain location, and I deeply regret that this was not followed.` }
+];
+const smesarahQuality = [
+  { label: "Food Safety", tag: "empathy", text: `Hello and welcome to [specific market] Customer Service! I hope you are doing well. My name is [Name], and I want to sincerely thank you for reaching out to us about your food safety concerns. I am so sorry to hear that you have been feeling unwell after consuming the meals. I completely understand how unsettling that can be.` },
+  { label: "Missing Meal", tag: "action", text: `Hi there! Thanks for reaching out to [specific market]. I am [Name], and I am really sorry to hear that one of your meals was missing. I totally get how frustrating that must be. Do not worry, I am here to help, and I will look into this right away so I can sort it out for you.` },
+  { label: "Ask for Photos", tag: "action", text: `I hope this is not too much to ask, but could you please attach a photo of the box as it was when you received it, along with a photo of the affected ingredients, here in our chat? Thank you so much!` },
+  { label: "Premium Surcharges", tag: "info", text: `I sincerely apologize if this situation has caused any inconvenience or confusion. Meals labeled as Premium, Street Food, or Dinner to Lunch offer unique recipes and thus incur additional costs. An extra fee is applied to each meal featuring one of these labels in its recipe.` }
+];
+const smesarahDifficult = [
+  { label: "Threatening Review", tag: "empathy", text: `I hear you, and I wish I could give you a different answer. I understand you might want to share your experience with others, and that is completely your right. Your feelings are valid. If you do decide to share, I would really appreciate it if you could mention the full situation, including that the changes you are requesting came in after our deadline.` },
+  { label: "Keep Asking Impossible", tag: "boundary", text: `I understand you really want this to work. I have checked everything I can check, and it is just not something we can do. I know that is not what you wanted to hear.` },
+  { label: "Asking for Manager", tag: "info", text: `I understand that you are hoping to speak with someone else or perhaps someone at a higher level. Just so you know, I work in the complaints department, and we handle all types of concerns like this. I completely understand your frustration with our current conversation, but at [specific market], we all follow the same rules and policies.` },
+  { label: "Profanity", tag: "boundary", text: `I can really hear how upset you are, and I understand this has been frustrating for you. I want you to know that I have already been giving this my absolute best effort to help you. I genuinely care about getting this resolved for you. I do need to ask that we keep our conversation respectful though, without the strong language.` }
+];
+const smesarahClosing = [
+  { label: "Close Positive", tag: "close", text: `You are welcome! I hope my solutions helped. If you have more questions or need further assistance, just let me know.` },
+  { label: "Apologetic Close", tag: "close", text: `I genuinely apologize for any inconvenience or frustration this situation may have caused. Your patience and understanding are greatly appreciated.` },
+  { label: "Survey Resolved", tag: "close", text: `You are very welcome. I am really glad I could help you today.\n\nYou may see a quick survey pop up about your experience. It only takes a few seconds to complete. The rating goes from 1 (not satisfied) to 5 (very satisfied), and if everything was resolved for you, a rating of 5 really helps us know we did things right and means a lot to our team.\n\nThanks again for your time. We appreciate you.` },
+  { label: "Survey Unresolved", tag: "close", text: `We are really sorry we could not fully resolve your concern today, but thank you for your patience and for giving us the chance to assist you.\n\nYou may see a quick survey pop up about your experience. It only takes a few seconds to complete. The rating goes from 1 (not satisfied) to 5 (very satisfied), and your honest feedback helps us understand where we need to improve and do better next time.\n\nWe truly appreciate your time and understanding.` }
+];
+
+// =====================
+// FACTOR DE SPIELS
+// =====================
+const factordeOpening = [
+  { label: "No Context", tag: "open", text: `Welcome to Factor! My name is [Name], great to have you with us! How can I help you today?` },
+  { label: "With Context", tag: "open", text: `Hello and welcome to Factor! I am [Name]. I see you are reaching out about your [subscription / delivery / payment / account / meals]. Could you tell me a little more about it so I can help you best?` }
+];
+const factordeVerification = [
+  { label: "Two Data Points Needed", tag: "action", text: `So that I can pull up your account and help you properly, I just need your full delivery address, including street and postal code, as well as your email address. And may I ask, am I speaking with the account holder?` },
+  { label: "One Data Point Needed", tag: "action", text: `To verify your account, could you please provide your full delivery address, including street and postal code? And are you the account holder?` },
+  { label: "Pulling Up Account", tag: "action", text: `Thank you! Give me a moment, I am looking at your account now.\n\nI appreciate your patience, I am pulling everything up now so I can give you the right answer.` }
+];
+const factordeCancelDeadline = [
+  { label: "Missed Cutoff", tag: "action", text: `Thank you for reaching out to Factor! My name is [Name], and I am sorry to hear you would like to cancel your order. I will gladly check your account to see what is still possible. Please note, whether a cancellation is still possible depends on your personal order deadline, which varies based on your delivery day. I am checking this for you right now.` }
+];
+const factordeAccountCancel = [
+  { label: "Cancellation Request", tag: "close", text: `Thank you for reaching out. My name is [Name], and I am really sorry you want to cancel your account. We truly enjoyed having you as a customer! I will gladly help you with this and guide you step by step.\n\nYou can also cancel your account yourself at any time by logging into your account, going to Account Settings, and selecting the cancellation option. At Factor there is no contract, you are welcome to come back at any time. Would you like me to take care of this for you right now?` },
+  { label: "Retention Attempt", tag: "retention", text: `Before I continue, may I ask what led you to this decision? I would really like to understand and see if we can find a solution together. Your feedback is very important to us.\n\nWe would really love to keep you, but I completely respect your decision. If you are open to it, your reason helps us improve for everyone.` },
+  { label: "Acknowledge and Appreciate", tag: "empathy", text: `Thank you for being so open with me. I completely understand and really appreciate you sharing this with me.\n\nThat is completely understandable. Thank you for your honesty and for giving us your time.` },
+  { label: "Confirmed No Upcoming Delivery", tag: "close", text: `We are very sorry to see you go and we hope to welcome you back one day! Your subscription has been cancelled and a confirmation email is already on the way. Please note, any active discounts have also been removed. Remember, there are no contracts at Factor. Whenever you want, simply log back in and reactivate your account. Thank you so much for being part of the Factor family!` },
+  { label: "Confirmed With Upcoming Delivery", tag: "close", text: `We are really sorry to lose you and we thank you for the time you spent with us! Your subscription has been cancelled and a confirmation email is on the way. Your last delivery is still scheduled for [Date]. Keep an eye out for the tracking update the day before. If you want to come back at any time, just log in and click Reactivate. We are always happy to see you. Thank you for choosing Factor!` }
+];
+const factordeFirstBox = [
+  { label: "Pre Deadline First Box Still Active", tag: "info", text: `I looked at your account. I can see that your subscription was cancelled on [Date], however your first delivery on [Date] is still active and a payment of [Currency and Amount] is still being processed.\n\nPlease note, cancelling the subscription does not automatically cancel the first order. This must be cancelled manually by us.\n\nSince we are still before your order deadline, I can gladly do this for you now! Please keep in mind though, if I cancel this first order, you will lose your status as a new customer, and any first customer discounts will no longer be available if you sign up again. Shall I proceed?` },
+  { label: "First Box Updated", tag: "action", text: `All done! I have successfully updated your [delivery date / address / delivery instruction / meal preference / time slot] for your first box. Remember, Factor is a weekly subscription that automatically renews unless you skip or make changes before your personal order deadline. Everything can be easily managed via your account settings. I am always here for you if you need anything!` },
+  { label: "First Box Cancelled", tag: "close", text: `Your first box has been cancelled. All done! If you still receive an SMS or email on the delivery day, you can ignore it. I have manually cancelled the order and payment on our end. There will be no delivery unless you reactivate your account.` }
+];
+const factordeAfterDeadline = [
+  { label: "Unexpected Charge", tag: "empathy", text: `I am sincerely sorry that this charge caught you by surprise. I completely understand how frustrating that must be. Let me take a look at your account and explain everything to you as clearly as possible.` },
+  { label: "Cannot Cancel In Processing", tag: "action", text: `Thank you for your patience while I checked this. Your subscription is active and your delivery for [Date] is already processing. Unfortunately, your personal order deadline has already passed, after which we can no longer make changes or cancellations. I know this is not what you wanted to hear, and I am really sorry.\n\nThis deadline exists so that we can plan the exact quantities with our suppliers and keep food waste as low as possible. Once this window is closed, everything is already in motion.` },
+  { label: "Suggest Passing Box Along", tag: "empathy", text: `Since the box is already on its way, perhaps a neighbour or family member could accept it? This way the ingredients would not go to waste, which is very important to us. If you will not be home, please feel free to leave delivery instructions in your account.` },
+  { label: "One Time Goodwill Exception", tag: "action", text: `After careful review of your account, I can no longer change the order itself, but I can cancel it and offer you a [credit / refund] as a one-time goodwill gesture. Shall I arrange this for you?` },
+  { label: "Credit Confirmation", tag: "close", text: `All done! Your box has been cancelled and a credit of [Currency and Amount] has been applied to your Factor account. It will automatically be applied to your next order. No further action is required on your part. Please remember that this was a one-time goodwill gesture. For future changes, we ask that you make them before your personal order deadline.` },
+  { label: "Refund Confirmation", tag: "close", text: `Your box has been cancelled and a refund of [Currency and Amount] has been initiated to your original payment method. Please allow up to 10 business days for the amount to appear in your account. The exact time depends on your bank. This goodwill was a one-time exception. For future changes, we ask that you make them well before your order deadline.` }
+];
+const factordeLogistics = [
+  { label: "Delay Initial Response", tag: "empathy", text: `I am really sorry that your box has not arrived yet. I understand how much you have been looking forward to your meals! Give me a moment, I will check right now to see what is going on with your delivery.` },
+  { label: "Failed Delivery", tag: "empathy", text: `Thank you for your patience. I unfortunately have to let you know that your box will not arrive today. I am very sorry about this and it absolutely does not meet our standard. I have already escalated this internally to find out what went wrong.` },
+  { label: "Refund and Credit Failed Delivery", tag: "action", text: `I have immediately initiated a refund of [Currency and Amount]. Please allow up to 10 business days depending on your bank. As a sincere apology, I have also added a credit of [Currency and Amount] to your Factor account. This will automatically be applied to your next order.` },
+  { label: "Delivery Window Explanation", tag: "info", text: `Factor works with delivery time slots instead of exact times. Your time slot for this delivery is [Time Slot]. If your box has not arrived by the end of this window, please reach out immediately and I will take care of it right away.` },
+  { label: "Leave Safe Instructions Not Followed", tag: "empathy", text: `I am very sorry that your delivery instructions were not followed. They absolutely should have been respected. I am forwarding this directly to our logistics team. Your feedback helps us improve, and I am grateful that you let us know.` },
+  { label: "Damaged Box", tag: "empathy", text: `I am very sorry that your box arrived in this condition! We place great importance on our packaging, and this clearly does not meet the standard you deserve. I am reporting this immediately to our packaging and logistics team. Could I take a closer look at the details?` },
+  { label: "Will Not Be Home", tag: "info", text: `Since Factor delivers fresh, ready-made meals, it is important that the box is stored well. If you know you will not be home, please update your delivery instructions before your order deadline. For example, you could request it be left with a neighbour or at a safe drop-off location. We do our best to follow your instructions!` }
+];
+const factordeFoodQuality = [
+  { label: "Food Safety Opening", tag: "empathy", text: `Welcome to Factor! My name is [Name]. Thank you very much for reaching out. Your health and safety are our highest priority. I am sincerely sorry to hear that you felt unwell after one of our meals. I hope you are feeling a bit better already. To be able to investigate this properly, could you send me photos or further details about the incident? The more we know, the more thoroughly and quickly we can act.` },
+  { label: "Food Safety Resolution", tag: "action", text: `I have created a detailed report and forwarded it with the highest priority to our food safety team. Please keep an eye on your phone and emails, someone from our team will be in contact shortly to get more details. We take this very seriously, and I am truly grateful that you reached out. Can I help you with anything else in the meantime?` },
+  { label: "Quality Issue Initial", tag: "empathy", text: `Oh no, I am really sorry about that! This does not match the experience we have in mind for you, and I completely understand how disappointing that is. I am forwarding this to our quality team immediately. Which meal was affected, and do you have the meal number handy?` },
+  { label: "Ask for Photos", tag: "action", text: `If it is not too much trouble, could you send me a photo of the affected item or the packaging here in the chat? This helps us a lot with the internal investigation and allows us to speak with our supplier so this does not happen again. Thank you very much!` },
+  { label: "Quality Credit Resolution", tag: "close", text: `I sincerely apologize again for the inconvenience. I have reported everything to our quality and packaging team. As a sincere apology, I have added a credit of [Currency and Amount] to your Factor account, which will automatically be applied to your next order. Thank you for your patience and for giving us the chance to make this right!` }
+];
+const factordePickPack = [
+  { label: "Probing What Went Wrong", tag: "action", text: `I am sorry about that! So that I can help you properly, could you describe exactly what happened? Which meals were affected and what exactly was missing or incorrect?` },
+  { label: "Missing Ingredients", tag: "empathy", text: `I am really sorry that some ingredients were missing. I know how frustrating that is, especially when you have planned a specific dish. Thank you for taking the time to let us know. This is exactly how we find and fix such errors, and I am reporting this to our kitchen team right away.` },
+  { label: "Incorrect Meal", tag: "empathy", text: `I am so sorry that you received the wrong meal! That must be really disappointing, especially if you were looking forward to something specific. Which meal were you expecting, and which one arrived? With this information, I can make sure everything is recorded correctly and resolved for you as quickly as possible.` },
+  { label: "Compensation Pushback", tag: "info", text: `I completely understand your frustration, and I am sorry that the credit does not feel sufficient. That is a valid point. The amount is based on the ingredient price and the affected portion of your order, to ensure fair and consistent handling for all customers. I have checked this again and the amount is in line with our guidelines. Your feedback is always welcome and I truly thank you for it.` }
+];
+const factordeRefunds = [
+  { label: "Refund Processed", tag: "close", text: `I have initiated a refund of [Currency and Amount] to your original payment method. Please allow up to 10 business days for the amount to appear in your account. The exact time depends on your bank. I hope this gets resolved quickly for you!` },
+  { label: "Refund Not Received Escalate", tag: "action", text: `Thank you for your patience. I can see that the refund was initiated on [Date]. I understand that it should have been received by now. I am forwarding this to our payment team so they can investigate further. I will get back to you as soon as I have an update!` },
+  { label: "Credit Added", tag: "close", text: `As a sincere apology, I have added a credit of [Currency and Amount] to your Factor account. This will automatically be applied to your next order. You do not need to do anything else!` }
+];
+const factordeVouchers = [
+  { label: "Voucher Issue", tag: "action", text: `I am sorry there are issues with your voucher. We will sort this out together! Could you share the code with me or send a screenshot of the offer? I will check right away.` },
+  { label: "Credit and Voucher Cannot Combine", tag: "info", text: `A quick note: credits and vouchers unfortunately cannot be used on your account at the same time. You currently have [Currency and Amount] in credit. As soon as your active voucher is fully used, your credit will be available for the next order.\n\nIf you would like, I can remove the active voucher now so you can use your credit immediately. Please note, the voucher cannot be restored afterwards. How would you like to proceed? I am happy to help!` }
+];
+const factordeGDPR = [
+  { label: "Account Deletion Request", tag: "action", text: `Thank you for reaching out. My name is [Name], and I want to ensure your request is handled carefully and with the necessary respect. Your data privacy is very important to us.\n\nBefore I can proceed, I briefly need to record the reason for your request. This is part of the form I must complete for a proper GDPR deletion. If you would like, you are welcome to share the reason with me. Of course, there is no obligation to do so.\n\nThank you for your openness. I am now forwarding your request to our data protection team, and you will receive an email confirmation once the process is complete.` },
+  { label: "Not the Account Holder", tag: "info", text: `Thank you for reaching out! For security and privacy reasons, we unfortunately cannot view or share account details without the explicit consent of the account holder. I know this means an extra step, and I apologize for that.\n\nIt would be best if the account holder contacts us directly, via chat, phone, or email. Once they have reached out, we can leave a note on the account allowing you to manage the subscription in the future.` }
+];
+const factordeDifficult = [
+  { label: "Threatening a Bad Review", tag: "empathy", text: `I hear you, and I truly wish I could give you a different answer. You have every right to share your experience. I completely respect that. I would only ask you to present the full picture, including the fact that this request reached us after your personal order deadline had passed, which is why I unfortunately cannot make a change. I am really sorry.` },
+  { label: "Customer Keeps Asking Not Possible", tag: "empathy", text: `I completely understand how much you want a solution, and I wish I could do more. I have checked everything available to me, but I must be honest with you. This is unfortunately beyond my capabilities. Not because I do not want to help, but because it is technically not possible.\n\nWe have discussed this a few times now, and my answer will not change. But I really do want to help you. Let me see what I can actually do for you.` },
+  { label: "Customer Gets Emotional", tag: "empathy", text: `I hear you, and I take this very seriously. I truly want to help and am doing everything I can. Please know I am here for you. Let us look together to see what we can find.` },
+  { label: "Asking for a Manager", tag: "action", text: `Of course, I completely understand. I want to be transparent with you: all our agents work with the same guidelines, so a colleague would share the same information. But I can certainly ask a team lead to review your case and get back to you as soon as possible.` },
+  { label: "Profanity", tag: "empathy", text: `I hear that you are very frustrated, and I really want to help you. However, I kindly ask you to keep our conversation respectful so we can find a solution together. I am still here for you and would like to resolve this for you.` }
+];
+const factordeSubscription = [
+  { label: "How Factor Works", tag: "info", text: `A quick note on how Factor works: it is a weekly subscription that automatically renews. Your fully prepared meals are automatically prepared and delivered every week unless you skip, pause, or make changes before your personal order deadline. Everything can be easily managed via your account or the app. I am always happy to help!` },
+  { label: "Website and App Troubleshooting", tag: "info", text: `I am sorry you are experiencing difficulties! Our team has confirmed that everything is working normally on our end, so it might be related to your device or browser. A few things that often help:\n\nFirst, try opening the page in a private or incognito window. If that does not help, I recommend Chrome or Safari for the best experience. You can also clear cookies and cache by going to your browser settings, selecting clear browsing data, and choosing all time. The Factor app is often the fastest and most reliable option!\n\nIf it still does not work after that, please let me know. I will report it to our technical team immediately.` }
+];
+const factordeClosing = [
+  { label: "Positive Close", tag: "close", text: `You are very welcome! I hope this helped you. If you ever need anything, do not hesitate to reach out. We are always happy to help.` },
+  { label: "Apology Close", tag: "close", text: `I sincerely apologize again for the inconvenience caused. Thank you for your patience and for giving us the opportunity to clarify this.` },
+  { label: "Warm Close", tag: "close", text: `It was a true pleasure helping you today! I hope you enjoy your next Factor delivery. All the best, and enjoy your meal!` }
+];
+
+// =====================
+// FACTOR DK SPIELS
+// =====================
+const factordkOpening = [
+  { label: "No Context", tag: "open", text: `Hi and welcome to Factor! My name is [Name]. Great that you reached out! What can I help you with today?` },
+  { label: "With Context", tag: "open", text: `Hi and welcome to Factor! I am [Name]. I can see you are reaching out about your [subscription / delivery / payment / account / meals]. Can you tell me a little more about the situation so I can help you in the best possible way?` }
+];
+const factordkVerification = [
+  { label: "Two Data Points Needed", tag: "action", text: `To be able to look up your account and help you properly, may I ask for your full delivery address, including street name and postal code, as well as your email address? And just to confirm, am I speaking with the account holder?` },
+  { label: "Pulling Up Account", tag: "action", text: `Thank you! Give me a moment, I am looking at your account now.\n\nI appreciate your patience. I am pulling everything up now so I can give you the right answer.` }
+];
+const factordkAccountCancel = [
+  { label: "Cancellation Request", tag: "close", text: `Thank you for contacting us. I am [Name], and I am genuinely sorry to hear that you want to cancel your account. We have really enjoyed having you as a customer! I will gladly help you with this and guide you through the process.\n\nYou can also cancel yourself by logging into your account, going to Account Settings, and choosing the cancellation option. At Factor there is no binding period, you are always welcome back. Would you like me to sort it out for you now?` },
+  { label: "Retention Attempt", tag: "retention", text: `Before I move on, are you open to sharing what led to this decision? I would like to understand if there is anything we can do differently. Your feedback means a lot to us.\n\nWe would really like to keep you, but I naturally respect your decision fully. Even if you still want to cancel, your feedback helps make Factor better for everyone.` },
+  { label: "Confirmed No Upcoming Delivery", tag: "close", text: `We are sorry to see you go, and we hope to see you again one day! Your subscription is now cancelled, and you will shortly receive a confirmation email. Please note, any active discounts are also removed as part of the process. Remember, at Factor there is no binding period, so you can always reactivate your account. Just log in and click Reactivate. Thank you so much for being part of the Factor family!` },
+  { label: "Confirmed With Upcoming Delivery", tag: "close", text: `We are really sorry to say goodbye, and we appreciate the time you have spent with us! Your subscription is cancelled, and a confirmation email is on the way. Your last delivery is still planned for [Date]. Keep an eye out for the tracking message the day before. If you ever feel like coming back, simply log in and press Reactivate. We are here for you. Thank you for choosing Factor!` }
+];
+const factordkAfterDeadline = [
+  { label: "Cannot Cancel In Processing", tag: "action", text: `Thank you for your patience while I looked into this. I can confirm that your subscription is active, and your delivery on [Date] is already in progress. Your personal order deadline has unfortunately already passed, and we cannot change or cancel this box. I know this is not the answer you hoped for, and I am sincerely sorry.\n\nThe deadline exists because we must order exactly the right quantities from our suppliers to minimize food waste. When that window closes, everything is already set in motion.` },
+  { label: "One Time Goodwill Exception", tag: "action", text: `After a thorough review of your account, I cannot change the order itself, but I can cancel it and offer you a [credit / refund] as a one-time goodwill gesture. Would you like me to do that?` },
+  { label: "Credit Confirmation", tag: "close", text: `All sorted! Your box is cancelled, and a credit of [Currency and Amount] has been added to your Factor account. It will automatically be applied to your next order. You do not need to do anything. Please note that this was a one-time goodwill gesture. Future changes must be made before your personal order deadline.` },
+  { label: "Refund Confirmation", tag: "close", text: `Your box is cancelled, and a refund of [Currency and Amount] has been sent back to your original payment method. Please allow up to 10 business days, depending on your bank. This exception was a one-time gesture. Future changes must be made before your personal order deadline.` }
+];
+const factordkLogistics = [
+  { label: "Delay Initial Response", tag: "empathy", text: `I am really sorry to hear that. I know you have been counting on getting your meals! Give me a moment. I will look into what is happening with your delivery right away.` },
+  { label: "Failed Delivery", tag: "empathy", text: `Thank you for your patience. I unfortunately have to let you know that your box will not arrive today. This is completely unacceptable, and I have already escalated the matter internally to find out what went wrong. You deserve better, and I am sincerely sorry.` },
+  { label: "Delivery Window Explanation", tag: "info", text: `Factor works with delivery windows rather than precise times. Your window for this delivery is [Time Slot]. If your box has not arrived by the end of that window, please contact us immediately and I will follow up right away.` }
+];
+const factordkFoodQuality = [
+  { label: "Food Safety Opening", tag: "empathy", text: `Hi and welcome to Factor! I am [Name]. Thank you so much for reaching out. Your health and safety are our absolute top priority, and I am sincerely sorry to hear that you have been feeling unwell after one of our meals. I hope you are feeling better now. For us to investigate this properly, are you able to send photos or further details about the situation?` },
+  { label: "Quality Issue Initial", tag: "empathy", text: `Oh no, I am really sorry! That is certainly not the experience we want for you, and I fully understand how disappointing it must have been. Let me report this to our quality team immediately. Which meal was the problem, and do you happen to have the meal number?` },
+  { label: "Quality Credit Resolution", tag: "close", text: `Once again, I truly apologize for the hassle. I have reported everything to our quality and packaging team. As a sincere apology, I have added a credit of [Currency and Amount] to your Factor account, which will automatically be applied to your next full-price order. Thank you for your patience and for giving us the opportunity to make it right!` }
+];
+const factordkRefunds = [
+  { label: "Refund Processed", tag: "close", text: `I have processed a refund of [Currency and Amount] back to your original payment method. Please allow up to 10 business days, depending on your bank. I hope it comes through quickly!` },
+  { label: "Credit Added", tag: "close", text: `As a sincere apology, I have added a credit of [Currency and Amount] to your Factor account. It will automatically be applied to your next full-price order. You do not need to do anything!` }
+];
+const factordkDifficult = [
+  { label: "Customer Keeps Asking Not Possible", tag: "empathy", text: `I fully understand how much you want to get this resolved, and I really wish I could do more. I have checked everything possible on my end, but I have to be honest with you. This is unfortunately not something I am able to do. Not because I do not want to help, but because it is simply not possible from my end.\n\nWe have now talked about this a couple of times, and my answer will not change. But I really do want to help you. Let us see what I can actually do for you.` },
+  { label: "Asking for a Manager", tag: "action", text: `Of course, I understand. To be open with you, all our agents work with the same guidelines, so a colleague would give you the same information. But I can easily arrange for a team leader to review your case and get back to you as soon as possible.` }
+];
+const factordkClosing = [
+  { label: "Positive Close", tag: "close", text: `You are welcome! I hope that helped. If you ever need anything, you are always welcome to reach out. We are here for you.` },
+  { label: "Warm Close", tag: "close", text: `It was a pleasure helping you today! I hope you enjoy your next Factor delivery. Take good care of yourself, and enjoy your meal!` }
+];
+
+// =====================
+// FACTOR SE SPIELS
+// =====================
+const factorseOpening = [
+  { label: "No Context", tag: "open", text: `Hi and welcome to Factor! My name is [Name], glad you reached out! How can I help you today?` },
+  { label: "With Context", tag: "open", text: `Hi and welcome to Factor! I am [Name]. I see that you are reaching out about your [subscription / delivery / payment / account / meals]. Can you tell me a little more about what happened so I can help you in the best possible way?` }
+];
+const factorseVerification = [
+  { label: "Two Data Points Needed", tag: "action", text: `To be able to pull up your account and help you properly, could you share your full delivery address, including street name and postal code, as well as your email address? And just to confirm, am I speaking with the account holder?` },
+  { label: "Pulling Up Account", tag: "action", text: `Thank you! Give me a moment, I am looking at your account now.\n\nI appreciate your patience. I am fetching everything right now so I can give you the right answer.` }
+];
+const factorseAccountCancel = [
+  { label: "Cancellation Request", tag: "close", text: `Thank you for reaching out. I am [Name], and I am genuinely sorry to hear that you want to close your account. We have really enjoyed having you as a customer! I will happily help you with this.\n\nYou can also close it on your own by logging into your account, going to Account Settings, and choosing the option to cancel. At Factor there is no binding period, you are always welcome back. Would you like me to take care of this for you now?` },
+  { label: "Retention Attempt", tag: "retention", text: `Before I proceed, are you comfortable sharing what led to this decision? I would really like to understand and see if there is anything we can do to improve your experience.\n\nWe would love to keep you, but I naturally respect your decision fully. Your feedback helps us get better for everyone.` },
+  { label: "Confirmed No Upcoming Delivery", tag: "close", text: `We are sorry to see you go, and we hope you find your way back one day! Your subscription is now closed and you will soon receive a confirmation email. Please note that any active discounts have also been removed in connection with this. Remember, at Factor there is no binding period, so you can always reactivate whenever you want. Just log in and click Reactivate. Big thanks for being part of the Factor family!` },
+  { label: "Confirmed With Upcoming Delivery", tag: "close", text: `We are really sorry to say goodbye, and we appreciate the time you spent with us! Your subscription is closed and a confirmation email is on the way. Your last delivery is still scheduled for [Date]. Keep an eye out for the tracking message the day before. If you ever want to come back, just log in and press Reactivate. We are here for you. Thank you for choosing Factor!` }
+];
+const factorseAfterDeadline = [
+  { label: "Cannot Cancel In Processing", tag: "action", text: `Thank you for your patience while I looked into this. I can confirm that your subscription is active and your delivery on [Date] is already being processed. Unfortunately, your personal order deadline has already passed, and we can no longer change or cancel this box. I know it is not what you were hoping to hear, and I am genuinely sorry for that.\n\nThe reason this deadline exists is that we have to order exactly the right amounts from our suppliers to keep food waste as low as possible. When that window closes, everything is already in motion.` },
+  { label: "One Time Goodwill Exception", tag: "action", text: `After a careful review of your account, I cannot change the order itself, but I can cancel it and offer you a [credit / refund] as a one-time goodwill gesture. Would you like me to do that?` },
+  { label: "Credit Confirmation", tag: "close", text: `Done! Your box is cancelled and a credit of [Currency and Amount] has been added to your Factor account. It will be automatically applied to your next order. You do not need to do anything. Please note that this was a one-time gesture. Future changes need to be made before your personal order deadline.` },
+  { label: "Refund Confirmation", tag: "close", text: `Your box is cancelled and a refund of [Currency and Amount] has been sent back to your original payment method. Please allow up to 10 business days. The exact time depends on your bank. This exception was a one-time gesture. Future changes must be made well before your order deadline.` }
+];
+const factorseLogistics = [
+  { label: "Delay Initial Response", "tag": "empathy", text: `I am really sorry to hear that. I understand how much you were counting on getting your meals! Give me a moment, and I will check right away what is happening with your delivery.` },
+  { label: "Failed Delivery", tag: "empathy", text: `Thank you for your patience. I unfortunately have to let you know that your box will not arrive today. This is completely unacceptable, and I have already escalated this internally to find out what went wrong. You deserved better, and I am genuinely sorry for that.` },
+  { label: "Delivery Window Explanation", tag: "info", text: `Factor works with delivery windows rather than exact times. Your window for this delivery is [Time Slot]. If your box has not arrived by the end of that window, please reach out straight away and I will follow up immediately.` },
+  { label: "Will Not Be Home", tag: "info", text: `Since Factor delivers ready-made meals, it is important that the box is taken care of well. If you know you will not be home, please update your delivery instructions in your account before your order deadline. For example, you can request the box to be left with a neighbour or in a safe location. We do our best to follow your wishes!` }
+];
+const factorseFoodQuality = [
+  { label: "Food Safety Opening", tag: "empathy", text: `Hi and welcome to Factor! I am [Name]. Thank you so much for reaching out. Your health and safety are our absolute priority, and I am really sorry to hear that you felt unwell after one of our meals. I hope you are feeling a little better now. For us to be able to investigate this properly, could you send photos or more details about the situation?` },
+  { label: "Quality Issue Initial", tag: "empathy", text: `Oh no, I am really sorry about that! That is definitely not the experience we want for you, and I understand how disappointing it must have felt. Let me report this to our quality team right away. Which meal was it, and do you have the meal number handy?` },
+  { label: "Quality Credit Resolution", tag: "close", text: `I sincerely apologize for the inconvenience once more. I have reported everything to our quality and packaging team. As a sincere apology, I have added a credit of [Currency and Amount] to your Factor account, which will be automatically applied to your next full-price order. Thank you for your patience and for giving us the chance to make it right!` }
+];
+const factorseRefunds = [
+  { label: "Refund Processed", tag: "close", text: `I have processed a refund of [Currency and Amount] back to your original payment method. Please allow up to 10 business days. The exact time depends on your bank. I hope it resolves quickly for you!` },
+  { label: "Credit Added", tag: "close", text: `As a sincere apology, I have added a credit of [Currency and Amount] to your Factor account. It will be automatically applied to your next full-price order. You do not need to do anything!` }
+];
+const factorseDifficult = [
+  { label: "Customer Keeps Asking Not Possible", tag: "empathy", text: `I really understand how much you want to get this resolved, and I wish I could do more. I have gone through everything available to me, but I have to be honest with you. This is not something I am able to do. Not because I do not want to help, but because it simply is not possible from my end.\n\nWe have talked about this a couple of times now, and my answer will not change. But I really do want to help you. Let us see what I can actually do.` },
+  { label: "Asking for a Manager", tag: "action", text: `Of course, I understand. I want to be open with you: all our agents work with the same guidelines, so a colleague would give you the same information. But I can absolutely arrange for a team leader to follow up on your case and reach out as soon as possible.` }
+];
+const factorseClosing = [
+  { label: "Positive Close", tag: "close", text: `You are welcome! I hope that helped. If you ever need anything, do not hesitate to reach out. We are always here for you.` },
+  { label: "Warm Close", tag: "close", text: `It was a pleasure helping you today! I hope you enjoy your next Factor delivery. Take care, and enjoy your meal!` }
+];
+
+// =====================
+// SECTION DEFINITIONS
+// =====================
+const beneluxSections = [
+  { id: "opening", icon: "👋", title: "Opening Spiels", cards: universalOpening },
+  { id: "verification", icon: "🔐", title: "Verification", cards: universalVerification },
+  { id: "cancellation", icon: "❌", title: "Cancellations", cards: universalCancellation },
+  { id: "afterDeadline", icon: "🔒", title: "After Deadline", cards: universalAfterDeadline },
+  { id: "logistics", icon: "🚚", title: "Logistics and Delivery", cards: universalLogistics },
+  { id: "quality", icon: "🥗", title: "Food Safety and Quality", cards: universalQuality },
+  { id: "difficult", icon: "💬", title: "Difficult Conversations", cards: universalDifficult },
+  { id: "closing", icon: "🙏", title: "Closing Spiels", cards: universalClosing }
+];
+const nordicsSections = beneluxSections;
+const dachSections = beneluxSections;
+
+const smesarahSections = [
+  { id: "opening", icon: "👋", title: "Opening Spiels", cards: smesarahOpening },
+  { id: "verification", icon: "🔐", title: "Verification", cards: smesarahVerification },
+  { id: "cancellation", icon: "❌", title: "Cancellations", cards: smesarahCancellation },
+  { id: "afterDeadline", icon: "🔒", title: "After Deadline", cards: smesarahAfterDeadline },
+  { id: "logistics", icon: "🚚", title: "Logistics and Delivery", cards: smesarahLogistics },
+  { id: "quality", icon: "🥗", title: "Food Safety and Quality", cards: smesarahQuality },
+  { id: "difficult", icon: "💬", title: "Difficult Conversations", cards: smesarahDifficult },
+  { id: "closing", icon: "🙏", title: "Closing Spiels", cards: smesarahClosing }
+];
+
+const factordeSections = [
+  { id: "opening", icon: "👋", title: "Opening Spiels", cards: factordeOpening },
+  { id: "verification", icon: "🔐", title: "Verification", cards: factordeVerification },
+  { id: "cancellation", icon: "⏰", title: "Cancellation Missed Deadline", cards: factordeCancelDeadline },
+  { id: "accountCancel", icon: "❌", title: "Account Cancellation", cards: factordeAccountCancel },
+  { id: "firstBox", icon: "📦", title: "First Box Situations", cards: factordeFirstBox },
+  { id: "afterDeadline", icon: "🔒", title: "After Deadline", cards: factordeAfterDeadline },
+  { id: "logistics", icon: "🚚", title: "Logistics and Delivery", cards: factordeLogistics },
+  { id: "quality", icon: "🥗", title: "Food Safety and Quality", cards: factordeFoodQuality },
+  { id: "pickPack", icon: "📋", title: "Pick and Pack Issues", cards: factordePickPack },
+  { id: "refunds", icon: "💶", title: "Refunds and Credits", cards: factordeRefunds },
+  { id: "vouchers", icon: "🎟️", title: "Vouchers and Discounts", cards: factordeVouchers },
+  { id: "gdpr", icon: "🛡️", title: "Data Protection and GDPR", cards: factordeGDPR },
+  { id: "difficult", icon: "💬", title: "Difficult Conversations", cards: factordeDifficult },
+  { id: "subscription", icon: "📅", title: "Subscription Reminder and Other", cards: factordeSubscription },
+  { id: "closing", icon: "🙏", title: "Closing Spiels", cards: factordeClosing }
+];
+
+const factordkSections = [
+  { id: "opening", icon: "👋", title: "Opening Spiels", cards: factordkOpening },
+  { id: "verification", icon: "🔐", title: "Verification", cards: factordkVerification },
+  { id: "accountCancel", icon: "❌", title: "Account Cancellation", cards: factordkAccountCancel },
+  { id: "afterDeadline", icon: "🔒", title: "After Deadline", cards: factordkAfterDeadline },
+  { id: "logistics", icon: "🚚", title: "Logistics and Delivery", cards: factordkLogistics },
+  { id: "quality", icon: "🥗", title: "Food Safety and Quality", cards: factordkFoodQuality },
+  { id: "refunds", icon: "💰", title: "Refunds and Credits", cards: factordkRefunds },
+  { id: "difficult", icon: "💬", title: "Difficult Conversations", cards: factordkDifficult },
+  { id: "closing", icon: "🙏", title: "Closing Spiels", cards: factordkClosing }
+];
+
+const factorseSections = [
+  { id: "opening", icon: "👋", title: "Opening Spiels", cards: factorseOpening },
+  { id: "verification", icon: "🔐", title: "Verification", cards: factorseVerification },
+  { id: "accountCancel", icon: "❌", title: "Account Cancellation", cards: factorseAccountCancel },
+  { id: "afterDeadline", icon: "🔒", title: "After Deadline", cards: factorseAfterDeadline },
+  { id: "logistics", icon: "🚚", title: "Logistics and Delivery", cards: factorseLogistics },
+  { id: "quality", icon: "🥗", title: "Food Safety and Quality", cards: factorseFoodQuality },
+  { id: "refunds", icon: "💰", title: "Refunds and Credits", cards: factorseRefunds },
+  { id: "difficult", icon: "💬", title: "Difficult Conversations", cards: factorseDifficult },
+  { id: "closing", icon: "🙏", title: "Closing Spiels", cards: factorseClosing }
+];
+
+const spielData = {
+  smesarah: { sections: smesarahSections },
+  nordics:  { sections: nordicsSections },
+  dach:     { sections: dachSections },
+  benelux:  { sections: beneluxSections },
+  factorde: { sections: factordeSections },
+  factordk: { sections: factordkSections },
+  factorse: { sections: factorseSections }
+};
+
+let currentRegion = 'smesarah';
+
+function switchRegion(code) {
+  currentRegion = code;
+  const root = document.documentElement;
+  
+  // Set Region Colors dynamically
+  root.style.setProperty('--theme-bg',     `var(--${code}-bg)`);
+  root.style.setProperty('--theme-border', `var(--${code}-border)`);
+  root.style.setProperty('--theme-light',  `var(--${code}-light)`);
+  root.style.setProperty('--theme-text',   `var(--${code}-text)`);
+
+  const logoEl = document.getElementById('mainLogo');
+  if (code === 'smesarah' || code === 'sahwrap') {
+    logoEl.style.display = 'none';
+  } else if (code.startsWith('factor')) {
+    logoEl.style.display = 'block';
+    logoEl.textContent = 'FACTOR';
+  } else {
+    logoEl.style.display = 'block';
+    logoEl.textContent = 'HELLOFRESH';
+  }
+
+  // Handle active states
+  const allCodes = ['smesarah','nordics','dach','benelux','factorde','factordk','factorse', 'sahwrap'];
+  document.querySelectorAll('.ctab').forEach((t, i) => {
+    t.classList.toggle('active', allCodes[i] === code);
+  });
+
+  document.querySelectorAll('.policyBar').forEach(b => b.classList.remove('active'));
+  const policyId = code.charAt(0).toUpperCase() + code.slice(1);
+  const activePolicyBar = document.getElementById('policy' + policyId);
+  if (activePolicyBar) activePolicyBar.classList.add('active');
+
+  document.querySelectorAll('.panelWrap').forEach(p => p.classList.remove('active'));
+  const activePanelWrap = document.getElementById('panel' + policyId);
+  if (activePanelWrap) activePanelWrap.classList.add('active');
+
+  // Handle Search and Sidebar for AI Tab
+  if (code === 'sahwrap') {
+    document.getElementById('mainSearchBar').style.display = 'none';
+    document.getElementById('noResults').style.display = 'none';
+    const sidebar = document.getElementById('sidebar');
+    sidebar.innerHTML = '<div class="sidebarSection">AI Assistant</div><div class="sidebarItem active">✨ KIRO Generator</div><div style="padding: 24px; font-size: 12px; color: var(--gray-text); line-height: 1.5;">This tool uses the Gemini API to analyze your chat and automatically format KIRO notes directly from your browser based on the official Nordics wrap codes.</div>';
+  } else {
+    document.getElementById('mainSearchBar').style.display = 'flex';
+    document.getElementById('searchInput').value = '';
+    renderSidebar(code);
+    filterSpiels();
+  }
+}
+
+function renderSidebar(code) {
+  const data = spielData[code];
+  const sidebar = document.getElementById('sidebar');
+  sidebar.innerHTML = '';
+  const sectionDiv = document.createElement('div');
+  sectionDiv.className = 'sidebarSection';
+  sectionDiv.textContent = 'Sections';
+  sidebar.appendChild(sectionDiv);
+
+  data.sections.forEach(sec => {
+    const item = document.createElement('div');
+    item.className = 'sidebarItem';
+    item.textContent = sec.icon + ' ' + sec.title;
+    item.onclick = () => {
+      document.querySelectorAll('.sidebarItem').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      const el = document.getElementById('sec' + code + sec.id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const hdr = el.querySelector('.sectionHeader');
+        if (hdr && !hdr.classList.contains('open')) hdr.click();
+      }
+    };
+    sidebar.appendChild(item);
+  });
+}
+
+function renderPanels() {
+  ['smesarah','nordics','dach','benelux','factorde','factordk','factorse'].forEach(code => {
+    const panelId = code.charAt(0).toUpperCase() + code.slice(1);
+    const panel = document.getElementById('panel' + panelId);
+    panel.innerHTML = '';
+
+    spielData[code].sections.forEach(sec => {
+      const secDiv = document.createElement('div');
+      secDiv.className = 'spielSection';
+      secDiv.id = 'sec' + code + sec.id;
+
+      const hdr = document.createElement('div');
+      hdr.className = 'sectionHeader';
+      hdr.innerHTML = `<div class="icon">${sec.icon}</div><h2>${sec.title}</h2><span class="chevron">&#9662;</span>`;
+      hdr.onclick = () => { hdr.classList.toggle('open'); body.classList.toggle('open'); };
+
+      const body = document.createElement('div');
+      body.className = 'sectionBody';
+
+      sec.cards.forEach(card => {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'spielCard';
+        cardDiv.dataset.text = card.text.toLowerCase();
+
+        let formattedText = card.text.replace(/\[([^\]]+)\]/g, (_, p) => `<span class="placeholder">[${p}]</span>`);
+
+        cardDiv.innerHTML = `
+          <div class="spielLabel"><span class="tag">${card.tag.toUpperCase()}</span>${card.label}</div>
+          <div class="spielText">${formattedText}</div>
+          <button class="copyBtn" onclick="copySpiel(this, \`${card.text.replace(/`/g,'\\`').replace(/\$/g,'\\$')}\`)">Copy</button>
+        `;
+        body.appendChild(cardDiv);
+      });
+
+      secDiv.appendChild(hdr);
+      secDiv.appendChild(body);
+      panel.appendChild(secDiv);
+    });
+  });
+}
+
+function copySpiel(btn, text) {
+  navigator.clipboard.writeText(text.trim()).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+function filterSpiels() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const panelId = currentRegion.charAt(0).toUpperCase() + currentRegion.slice(1);
+  const panel = document.getElementById('panel' + panelId);
+  let anyVisible = false;
+
+  panel.querySelectorAll('.spielSection').forEach(sec => {
+    let secVisible = false;
+    sec.querySelectorAll('.spielCard').forEach(card => {
+      const labelText = card.querySelector('.spielLabel').textContent.toLowerCase();
+      const bodyText = card.dataset.text || '';
+      const match = !q || labelText.includes(q) || bodyText.includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) secVisible = true;
+    });
+    sec.style.display = secVisible ? '' : 'none';
+    if (secVisible) {
+      anyVisible = true;
+      const body = sec.querySelector('.sectionBody');
+      if (q && body) body.classList.add('open');
+    }
+  });
+
+  document.getElementById('noResults').style.display = anyVisible ? 'none' : 'block';
+}
+
+renderPanels();
+switchRegion('smesarah');
+
+// =====================
+// FRONTEND KIRO API INTEGRATION
+// =====================
+async function generateKiro() {
+  const input = document.getElementById('chatInput').value;
+  const out = document.getElementById('aiOutput');
+  
+  if (!input.trim()) return;
+  
+  out.style.display = 'none';
+  document.getElementById('copyAiBtn').style.display = 'none';
+  document.getElementById('aiLoading').style.display = 'block';
+  document.getElementById('kiroBtn').disabled = true;
+  
+  const key = "AIzaSyDgw01Poasd9nnSllA9q-ummqENyuyGBnY"; 
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
+  
+  const promptText = `Analyze the following customer service chat. Determine the most accurate wrap code and keyword based ONLY on this reference list:
+
+[Wrap Code] -> [Valid Keywords]
+1. Account Cancellation - Duplicated Subscription -> Account-After deadline change request, Account Cancellation, Manager Call Back/Escalation, Meal Selection, Meal Swap, Refund, Donation, Delivery Change Possible, Delivery Change Not Possible, LMC, Unresponsive, Failed Verification, Double, Duplicated.
+2. Account Cancellation Customer Not Retained -> Trial Box, Unaware of Subscription, Confirmation, Signed up by mistake, Changed mind after sign-up, Didn't Like Delivery slots, Pricing Discount Issues, Unresponsive, Failed Verification, Account Management issues, Can't Afford, Delivery Issues, Didn't Like Meals, Didn't Like Service, Quality Issues.
+3. Account Cancellation Retained Customer -> Unaware of Subscription, Confirmation, Signed up by mistake, Changed mind after sign-up, Didn't Like Delivery slots, Pricing Discount Issues, Unresponsive, Failed Verification.
+4. Account-Data Protection -> Account Removal, Blocked Account, Data Protection, Deletion Request, Info, Subject Access Request, Typo, Unsubscribe, Verification, Unresponsive, Failed Verification.
+5. Account-Meal Swap/Recipe Preference -> Add On, Customisation, Dairy Free, Educate, Gluten Free, Ingredient Inquiry, Low Calorie, Meal Selection, Menu, Recipies, Meal Swap, Nutritional Information, Organic, Pescaturian, Plant based, Pork Free, Preference, Recipe Copy Request (PDF), Recipe Inquiry, Vegan, Veggie, Unresponsive, Failed Verification.
+6. Account-Reactivation -> Reactivation, Unresponsive, Failed Verification.
+7. Account-Skip/Unskip -> Pause, Unpause, Confirmation, Unresponsive, Failed Verification.
+8. Account-Update account/subscription details -> Delivery Day, Address, Payment Change, Password Reset, Email Address, Update, Edit phone number, edit address, Password Update, Box Size, Phone Number Update.
+9. Complaint-Food Safety -> Educate, Delivery Note, Status Confirmation, Unresponsive, Failed Verification, Allergy, Foreign Object, Food Poisoning, Food Safety Report, Label, Legal and Compliance, No Ice packs, Food poisoning, Nutrition, Pest Contamination, Poisoning, Sickness, Warm.
+10. Complaint-Logistic-Courier company -> Driver Behaviour, Property damage, Instructions not followed, Leave Safe, Unresponsive, Failed Verification.
+11. Complaint-Logistics-Early/Late -> Early 1 Day, Early 2 Day, Late 1 Day, Late 2 Day, Unresponsive, Failed Verification.
+12. Complaint-Logistics-Failed delivery -> Failed, Misrouted, No Delivery, Unresponsive, Failed Verification.
+13. Complaint-Pick & Pack -> CERT, BULK, Incorrect, Substitution, Missing, Missing Recipe Card, Wrong Portion size, Unresponsive, Failed Verification.
+14. Complaint-Quality -> CERT, Damage, Ice Packs, Leaking/Spilled, Mould, Open, Punctured/Torn, Seal open, Shelf Life Expired Date, Smelly, Spoiled, Substitution, Wilted, Portion Size, Frozen, Unresponsive, Failed Verification.
+15. Complaint - Website/App/Internal Tech Error -> Android, App, BOB, Changes not applied, Glitchy, Internet, IOS, PureCloud, Safari/ Internet Explorer/Chrome, System outage, Website.
+16. Logistics-Delivery Status -> ETA, Delivery Status Check, Tracking The Box, Send Tracking Link, Unresponsive, Failed Verification.
+17. Marketing-Applying Voucher/Gift Card -> Expired, Gift Card, Gift Card Confirmation, Manually Applied Code, Not Applied, Applied, Reactivation Code, Replaced Code, Unresponsive, Failed Verification.
+18. Marketing-Communication -> 3rd Party, Affiliate, Conditions, Discount, Gift Card, HEF, Collaboration requests, Multilevel, Product endorsement proposals, Not Received, Unsubscribe from comms, Notification, Partnership requests, Advertisement, Preferences, Promotion Education, Referral, Terms Unclear, Unresponsive, Failed Verification.
+19. Marketing-Direct Sales and Reactivation team -> Behaviour, Call Back, Late Knocking, Misinformation, Non-Customer, Unresponsive, Failed Verification.
+20. Marketing - Referral -> Existing Customer, Freebie, HelloShare, New Customer, Recipient, Referral Credit, Referral Credit Not Received, Sign-up Issues, Unresponsive, Failed Verification.
+21. Marketing-Voucher Fraud -> Exception, Honoured, Not Honoured, Fraud, Freebie Fraud, Previous Tenant, Voucher Fraud Cancellation, Unresponsive, Failed Verification.
+22. Other Connection Issue -> Connection issue, Disconnected, Unresponsive, Failed Verification.
+23. Other-Non-customer query -> Event, POC Request, Passed On Details, Unresponsive, Failed Verification.
+24. Other-Sustainability/Sourcing -> Complaint, Compost, Food Info, Free Range, Ice Pack Disposal, Ingredient, Meet Alternative, Organic, Packaging, Plastic, Recycling, Supplier, Waste, Unresponsive, Failed Verification.
+25. Payments-Charge breakdown -> AddOn, Breakdown, Charge, Confirmed Payment, Delivery Fee, Double Charge, Extras, Incorrect Charge, Payment Breakdown, Premium, Region Fee, Standard Shipping, Surcharge, Unauthorized Charge, Unresponsive, Failed Verification.
+26. Payments-Credit/Refund -> Credit, Credit Confirmation, Refund, Refund Confirmation, Unresponsive, Failed Verification.
+27. Payments-Outstanding/Dunning -> Chargeback, Failed Payment, Insufficient Funds, Outstanding Balance, Overpaid, Payment Method, Payments Schedule, Proof Of Payment, Waive, Dunning, Unresponsive, Failed Verification.
+
+  STRICT: ENGLISH ONLY. BE VERY CONCISE.
+  
+  Format exactly like this:
+  Wrap Code: [Insert appropriate Wrap Code from the list above]
+
+  K: [Insert appropriate Keyword from the list above for the chosen Wrap Code]
+  I: [Issue - max 10 words]
+  R: [Resolution - 1 to 2 short sentences outlining action taken. Use "I".]
+  O: [Other Information or Box ID if available, otherwise n/a]
+  
+  CHAT: ${input}`;
+
+  const payload = {
+    contents: [{ parts: [{ text: promptText }] }]
+  };
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ AI returned an empty response.";
+
+    document.getElementById('aiLoading').style.display = 'none';
+    document.getElementById('kiroBtn').disabled = false;
+    out.innerText = resultText;
+    out.style.display = 'block';
+    
+    if(!resultText.includes("⚠️")) {
+      document.getElementById('copyAiBtn').style.display = 'block';
+    }
+
+  } catch (error) {
+    document.getElementById('aiLoading').style.display = 'none';
+    document.getElementById('kiroBtn').disabled = false;
+    out.innerText = "🛑 Error connecting to Gemini. Please check your network or API key.\n\nDetails: " + error.message;
+    out.style.display = 'block';
+  }
+}
+
+function copyAiText() {
+  navigator.clipboard.writeText(document.getElementById('aiOutput').innerText);
+  const btn = document.getElementById('copyAiBtn');
+  btn.innerText = "Copied! ✨";
+  btn.style.background = "#059669";
+  btn.style.color = "#ffffff";
+  setTimeout(() => { 
+    btn.innerText = "Grab My Notes! 💖"; 
+    btn.style.background = "transparent";
+    btn.style.color = "var(--sahwrap-border)";
+  }, 2000);
+}
+
+function resetAIUI() {
+  document.getElementById('chatInput').value = '';
+  document.getElementById('aiOutput').style.display = 'none';
+  document.getElementById('copyAiBtn').style.display = 'none';
+}
+
+// =====================
+// ROTATING AFFIRMATION QUOTES
+// =====================
+const affirmationQuotes = [
+  "Every conversation is a chance to turn someone's day around. You've got this.",
+  "You are the voice of the brand. Make it count.",
+  "One great interaction at a time. That is how trust is built.",
+  "Your patience and empathy are your superpowers today.",
+  "When in doubt, empathise first. Always.",
+  "You represent a brand that millions of people trust. Take that seriously.",
+  "I choose patience over frustration. I choose solutions over stress.",
+  "Every case you handle matters. Every customer you help remembers.",
+  "You are not just solving problems. You are building loyalty.",
+  "Take a breath. You are more prepared than you think."
+];
+
+let currentQuoteIndex = Math.floor(Math.random() * affirmationQuotes.length);
+function showQuote(index) {
+  const el = document.getElementById('affirmationQuote');
+  if(el) {
+    el.style.animation = 'none';
+    el.offsetHeight; // reflow
+    el.style.animation = 'fadeQuote 0.5s ease';
+    el.textContent = affirmationQuotes[index];
+  }
+}
+function nextQuote() { currentQuoteIndex = (currentQuoteIndex + 1) % affirmationQuotes.length; showQuote(currentQuoteIndex); }
+function prevQuote() { currentQuoteIndex = (currentQuoteIndex - 1 + affirmationQuotes.length) % affirmationQuotes.length; showQuote(currentQuoteIndex); }
+showQuote(currentQuoteIndex);
+setInterval(nextQuote, 8000);
+
+// =====================
+// WORLD CLOCK + TAB TIMES
+// =====================
+const worldClocks = [
+  { id: 'clock-ph', tz: 'Asia/Manila' }, { id: 'clock-de', tz: 'Europe/Berlin' },
+  { id: 'clock-dk', tz: 'Europe/Copenhagen' }, { id: 'clock-se', tz: 'Europe/Stockholm' },
+  { id: 'clock-nl', tz: 'Europe/Amsterdam' }, { id: 'clock-be', tz: 'Europe/Brussels' },
+  { id: 'clock-at', tz: 'Europe/Vienna' }
+];
+
+const tabClocks = [
+  { id: 'tab-time-smesarah', tz: 'Asia/Manila',        label: 'PH' },
+  { id: 'tab-time-nordics',  tz: 'Europe/Oslo',        label: 'NO' },
+  { id: 'tab-time-dach',     tz: 'Europe/Berlin',      label: 'DE' },
+  { id: 'tab-time-benelux',  tz: 'Europe/Amsterdam',   label: 'NL' },
+  { id: 'tab-time-factorde', tz: 'Europe/Berlin',      label: 'DE' },
+  { id: 'tab-time-factordk', tz: 'Europe/Copenhagen',  label: 'DK' },
+  { id: 'tab-time-factorse', tz: 'Europe/Stockholm',   label: 'SE' }
+];
+
+function fmtTime(tz) {
+  return new Date().toLocaleTimeString('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+}
+
+function updateClocks() {
+  worldClocks.forEach(c => { const el = document.getElementById(c.id); if (el) el.textContent = fmtTime(c.tz); });
+  tabClocks.forEach(c => { const el = document.getElementById(c.id); if (el) el.textContent = c.label + ' ' + fmtTime(c.tz); });
+}
+updateClocks();
+setInterval(updateClocks, 1000);
+</script>
+</body>
+</html>
