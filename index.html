@@ -390,7 +390,7 @@
   .sahwrap-btn-copy:hover { background: #f472b6; color: white; }
   body.theme-dark .sahwrap-btn-copy:hover { background: var(--sahwrap-border); color: #fff; }
   
-  .sahwrap-reset { color: #f472b6; font-size: 13px; font-weight: 600; text-decoration: underline; cursor: pointer; margin-top: 12px; display: inline-block; }
+  .sahwrap-reset { color: #f472b6; font-size: 13px; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-block; transition: color 0.2s ease; }
   body.theme-dark .sahwrap-reset { color: var(--gray-text); }
   body.theme-dark .sahwrap-reset:hover { color: var(--black); }
 
@@ -566,7 +566,11 @@
         <div id="aiOutput" class="sahwrap-output"></div>
         
         <button class="sahwrap-btn-copy" id="copyAiBtn" onclick="copyAiText()">Copy Notes</button>
-        <div class="sahwrap-reset" onclick="resetAIUI()">Clear & Reset</div>
+        
+        <div style="margin-top: 16px;">
+          <span class="sahwrap-reset" onclick="resetAIUI()">Clear & Reset</span>
+          <span class="sahwrap-reset" style="margin-left: 16px;" onclick="clearApiKey()">Update API Key</span>
+        </div>
       </div>
     </div>
 
@@ -1103,13 +1107,20 @@ async function generateKiro() {
   const out = document.getElementById('aiOutput');
   
   if (!input.trim()) return;
+
+  // Retrieve key from browser storage or prompt user
+  let key = localStorage.getItem("gemini_api_key");
+  if (!key) {
+    key = prompt("For security, please enter your free Gemini API Key.\n\nIt will be saved safely in your browser and NEVER uploaded to GitHub.");
+    if (!key || !key.trim()) return; 
+    localStorage.setItem("gemini_api_key", key.trim());
+  }
   
   out.style.display = 'none';
   document.getElementById('copyAiBtn').style.display = 'none';
   document.getElementById('aiLoading').style.display = 'block';
   document.getElementById('kiroBtn').disabled = true;
   
-  const key = "AIzaSyDgw01Poasd9nnSllA9q-ummqENyuyGBnY"; 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
   
   const promptText = `Analyze the following customer service chat. Determine the most accurate wrap code and keyword based ONLY on this reference list:
@@ -1185,7 +1196,14 @@ async function generateKiro() {
   } catch (error) {
     document.getElementById('aiLoading').style.display = 'none';
     document.getElementById('kiroBtn').disabled = false;
-    out.innerText = "🛑 Error connecting to Gemini. Please check your network or API key.\n\nDetails: " + error.message;
+    
+    if (error.message.includes("403") || error.message.includes("400")) {
+      localStorage.removeItem("gemini_api_key");
+      out.innerText = "🛑 API Key Error. Your saved key was invalid or disabled by Google. It has been cleared. Please try generating again to enter a new key.";
+    } else {
+      out.innerText = "🛑 Error connecting to Gemini. Please check your network.\n\nDetails: " + error.message;
+    }
+    
     out.style.display = 'block';
   }
 }
@@ -1201,6 +1219,11 @@ function copyAiText() {
     btn.style.background = "var(--white)";
     btn.style.color = "var(--sahwrap-border)";
   }, 2000);
+}
+
+function clearApiKey() {
+  localStorage.removeItem("gemini_api_key");
+  alert("Your saved API key has been removed. You will be prompted for it next time you generate a note.");
 }
 
 function resetAIUI() {
