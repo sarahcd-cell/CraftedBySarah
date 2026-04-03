@@ -61,7 +61,7 @@
     --factorse-light: #9d174d;
     --factorse-text: #fce7f3;
     
-    /* SAHWRAP AI (Reverted to original vibrant colors) */
+    /* SAHWRAP AI */
     --sahwrap-bg: #ffcce0;
     --sahwrap-border: #f472b6;
     --sahwrap-light: #fcf4f7;
@@ -193,7 +193,48 @@
     --gray-light: #21262d;
     --white: #161b22;
     --black: #c9d1d9;
+
+    --smesarah-bg: #381124;      
+    --smesarah-light: #1f0a14;   
+    --smesarah-border: #f472b6;  
+    --smesarah-text: #fce7f3;    
+
+    --nordics-bg: #0f1c3f;
+    --nordics-light: #060e24;
+    --nordics-border: #60a5fa;
+    --nordics-text: #dbeafe;
+
+    --dach-bg: #3d1414;
+    --dach-light: #200808;
+    --dach-border: #f87171;
+    --dach-text: #fee2e2;
+
+    --benelux-bg: #0d3826;
+    --benelux-light: #051a11;
+    --benelux-border: #34d399;
+    --benelux-text: #d1fae5;
+    
+    --factorde-bg: #212121;
+    --factorde-light: #141414;
+    --factorde-border: #ef4444;
+    --factorde-text: #f3f4f6;
+
+    --factordk-bg: #1e1b4b;
+    --factordk-light: #0f0b29;
+    --factordk-border: #818cf8;
+    --factordk-text: #e0e7ff;
+
+    --factorse-bg: #4a1029;
+    --factorse-light: #250814;
+    --factorse-border: #e879f9;
+    --factorse-text: #fae8ff;
+    
+    --sahwrap-bg: #2e1065;
+    --sahwrap-light: #170833;
+    --sahwrap-border: #a855f7;
+    --sahwrap-text: #ede9fe;
   }
+
   body.theme-dark .header { color: #ffffff; }
   body.theme-dark .headerTitle { color: #ffffff; }
   body.theme-dark .headerSub { color: rgba(255,255,255,0.85); }
@@ -494,9 +535,9 @@
     <div class="policyBar" id="policyFactordk"><div class="barTitle">FACTOR DENMARK Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Website</div><div class="policyValue">factormeals.dk</div></div><div class="policyCell"><div class="policyLabel">Currency</div><div class="policyValue">DKK</div></div><div class="policyCell"><div class="policyLabel">Language</div><div class="policyValue">English (warm, direct)</div></div><div class="policyCell"><div class="policyLabel">Delivery Days</div><div class="policyValue">Check customer account</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Verify in account before quoting</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">Klarna, Visa, Mastercard, PayPal</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Danish customers tend to be direct and value transparency. Keep things honest and to the point. Always verify account details before quoting deadlines or charges.</div></div>
     <div class="policyBar" id="policyFactorse"><div class="barTitle">FACTOR SWEDEN Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Website</div><div class="policyValue">factormeals.se</div></div><div class="policyCell"><div class="policyLabel">Currency</div><div class="policyValue">SEK</div></div><div class="policyCell"><div class="policyLabel">Language</div><div class="policyValue">English (calm, courteous)</div></div><div class="policyCell"><div class="policyLabel">Delivery Days</div><div class="policyValue">Check customer account</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Verify in account before quoting</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">Klarna, Visa, Mastercard, PayPal</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Swedish customers appreciate calm, structured communication. Be clear about processes. Always check the individual account before referencing any deadlines, charges, or plans.</div></div>
     
-    <div class="policyBar" id="policySahwrap">
-      <div class="barTitle">🤖 KIRO Note Generator</div>
-      <div class="policyNote">📌 Paste your raw customer chat below to instantly generate a KIRO note based strictly on the Nordics Wrap Codes.</div>
+    <div class="policyBar" id="policySahwrap" style="background: var(--sahwrap-light); border-bottom-color: var(--sahwrap-border);">
+      <div class="barTitle" style="color: var(--sahwrap-text);">🤖 KIRO Note Generator</div>
+      <div class="policyNote" style="background: var(--white); border-left-color: var(--sahwrap-border); color: var(--sahwrap-text);">📌 Paste your raw customer chat below to instantly generate a KIRO note based strictly on the Nordics Wrap Codes.</div>
     </div>
 
     <div class="searchBar" id="mainSearchBar">
