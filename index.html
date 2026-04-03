@@ -537,7 +537,7 @@
     
     <div class="policyBar" id="policySahwrap" style="background: var(--sahwrap-light); border-bottom-color: var(--sahwrap-border);">
       <div class="barTitle" style="color: var(--sahwrap-text);">🤖 KIRO Note Generator</div>
-      <div class="policyNote" style="background: var(--white); border-left-color: var(--sahwrap-border); color: var(--sahwrap-text);">📌 Paste your raw customer chat below to instantly generate a KIRO note based strictly on the Nordics Wrap Codes.</div>
+      <div class="policyNote" style="background: var(--white); border-left-color: var(--sahwrap-border); color: var(--sahwrap-text);">📌 Paste your raw customer chat below to instantly generate a KIRO note based on matching keywords.</div>
     </div>
 
     <div class="searchBar" id="mainSearchBar">
@@ -556,20 +556,19 @@
     
     <div class="panelWrap" id="panelSahwrap">
       <div class="sahwrap-wrapper">
-        <div class="sahwrap-title">✨ KIRO Generator</div>
+        <div class="sahwrap-title">✨ KIRO Generator (Offline Mode)</div>
         <span class="sahwrap-label">Paste Chat Interaction</span>
         <textarea id="chatInput" class="sahwrap-textarea" placeholder="Paste the customer's chat or query here..."></textarea>
         
         <button class="sahwrap-btn-action" id="kiroBtn" onclick="generateKiro()">Generate Notes</button>
         
-        <div id="aiLoading" style="color: #00e676; font-style: italic; font-weight: 700; font-size: 14px; display: none; margin-bottom: 20px; text-align: center;">Analyzing chat context...</div>
+        <div id="aiLoading" style="color: #00e676; font-style: italic; font-weight: 700; font-size: 14px; display: none; margin-bottom: 20px; text-align: center;">Scanning chat for keywords... 🔍</div>
         <div id="aiOutput" class="sahwrap-output"></div>
         
         <button class="sahwrap-btn-copy" id="copyAiBtn" onclick="copyAiText()">Copy Notes</button>
         
         <div style="margin-top: 16px;">
           <span class="sahwrap-reset" onclick="resetAIUI()">Clear & Reset</span>
-          <span class="sahwrap-reset" style="margin-left: 16px;" onclick="clearApiKey()">Update API Key</span>
         </div>
       </div>
     </div>
@@ -985,7 +984,7 @@ function switchRegion(code) {
     document.getElementById('mainSearchBar').style.display = 'none';
     document.getElementById('noResults').style.display = 'none';
     const sidebar = document.getElementById('sidebar');
-    sidebar.innerHTML = '<div class="sidebarSection">AI Assistant</div><div class="sidebarItem active">✨ KIRO Generator</div><div style="padding: 24px; font-size: 12px; color: var(--gray-text); line-height: 1.5;">This tool uses the Gemini API to analyze your chat and automatically format KIRO notes directly from your browser based on the official Nordics wrap codes.</div>';
+    sidebar.innerHTML = '<div class="sidebarSection">Offline Tool</div><div class="sidebarItem active">✨ KIRO Generator</div><div style="padding: 24px; font-size: 12px; color: var(--gray-text); line-height: 1.5;">This tool works offline by scanning your pasted chat for specific keywords to automatically generate KIRO notes.</div>';
   } else {
     document.getElementById('mainSearchBar').style.display = 'flex';
     document.getElementById('searchInput').value = '';
@@ -1100,112 +1099,76 @@ renderPanels();
 switchRegion('smesarah');
 
 // =====================
-// FRONTEND KIRO API INTEGRATION
+// OFFLINE KIRO GENERATOR (KEYWORD BASED)
 // =====================
-async function generateKiro() {
-  const input = document.getElementById('chatInput').value;
+function generateKiro() {
+  const input = document.getElementById('chatInput').value.toLowerCase();
   const out = document.getElementById('aiOutput');
   
   if (!input.trim()) return;
-
-  // Retrieve key from browser storage or prompt user
-  let key = localStorage.getItem("gemini_api_key");
-  if (!key) {
-    key = prompt("For security, please enter your free Gemini API Key.\n\nIt will be saved safely in your browser and NEVER uploaded to GitHub.");
-    if (!key || !key.trim()) return; 
-    localStorage.setItem("gemini_api_key", key.trim());
-  }
   
   out.style.display = 'none';
   document.getElementById('copyAiBtn').style.display = 'none';
   document.getElementById('aiLoading').style.display = 'block';
   document.getElementById('kiroBtn').disabled = true;
   
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
-  
-  const promptText = `Analyze the following customer service chat. Determine the most accurate wrap code and keyword based ONLY on this reference list:
+  // Simulate a short delay so the tool feels like it is processing the text
+  setTimeout(() => {
+    
+    // Default fallback if no keywords are matched
+    let matchedCode = "23. Other-Non-customer query";
+    let matchedK = "Passed On Details";
+    let matchedI = "General customer inquiry";
+    let matchedR = "Assisted customer and answered questions regarding account.";
 
-[Wrap Code] -> [Valid Keywords]
-1. Account Cancellation - Duplicated Subscription -> Account-After deadline change request, Account Cancellation, Manager Call Back/Escalation, Meal Selection, Meal Swap, Refund, Donation, Delivery Change Possible, Delivery Change Not Possible, LMC, Unresponsive, Failed Verification, Double, Duplicated.
-2. Account Cancellation Customer Not Retained -> Trial Box, Unaware of Subscription, Confirmation, Signed up by mistake, Changed mind after sign-up, Didn't Like Delivery slots, Pricing Discount Issues, Unresponsive, Failed Verification, Account Management issues, Can't Afford, Delivery Issues, Didn't Like Meals, Didn't Like Service, Quality Issues.
-3. Account Cancellation Retained Customer -> Unaware of Subscription, Confirmation, Signed up by mistake, Changed mind after sign-up, Didn't Like Delivery slots, Pricing Discount Issues, Unresponsive, Failed Verification.
-4. Account-Data Protection -> Account Removal, Blocked Account, Data Protection, Deletion Request, Info, Subject Access Request, Typo, Unsubscribe, Verification, Unresponsive, Failed Verification.
-5. Account-Meal Swap/Recipe Preference -> Add On, Customisation, Dairy Free, Educate, Gluten Free, Ingredient Inquiry, Low Calorie, Meal Selection, Menu, Recipies, Meal Swap, Nutritional Information, Organic, Pescaturian, Plant based, Pork Free, Preference, Recipe Copy Request (PDF), Recipe Inquiry, Vegan, Veggie, Unresponsive, Failed Verification.
-6. Account-Reactivation -> Reactivation, Unresponsive, Failed Verification.
-7. Account-Skip/Unskip -> Pause, Unpause, Confirmation, Unresponsive, Failed Verification.
-8. Account-Update account/subscription details -> Delivery Day, Address, Payment Change, Password Reset, Email Address, Update, Edit phone number, edit address, Password Update, Box Size, Phone Number Update.
-9. Complaint-Food Safety -> Educate, Delivery Note, Status Confirmation, Unresponsive, Failed Verification, Allergy, Foreign Object, Food Poisoning, Food Safety Report, Label, Legal and Compliance, No Ice packs, Food poisoning, Nutrition, Pest Contamination, Poisoning, Sickness, Warm.
-10. Complaint-Logistic-Courier company -> Driver Behaviour, Property damage, Instructions not followed, Leave Safe, Unresponsive, Failed Verification.
-11. Complaint-Logistics-Early/Late -> Early 1 Day, Early 2 Day, Late 1 Day, Late 2 Day, Unresponsive, Failed Verification.
-12. Complaint-Logistics-Failed delivery -> Failed, Misrouted, No Delivery, Unresponsive, Failed Verification.
-13. Complaint-Pick & Pack -> CERT, BULK, Incorrect, Substitution, Missing, Missing Recipe Card, Wrong Portion size, Unresponsive, Failed Verification.
-14. Complaint-Quality -> CERT, Damage, Ice Packs, Leaking/Spilled, Mould, Open, Punctured/Torn, Seal open, Shelf Life Expired Date, Smelly, Spoiled, Substitution, Wilted, Portion Size, Frozen, Unresponsive, Failed Verification.
-15. Complaint - Website/App/Internal Tech Error -> Android, App, BOB, Changes not applied, Glitchy, Internet, IOS, PureCloud, Safari/ Internet Explorer/Chrome, System outage, Website.
-16. Logistics-Delivery Status -> ETA, Delivery Status Check, Tracking The Box, Send Tracking Link, Unresponsive, Failed Verification.
-17. Marketing-Applying Voucher/Gift Card -> Expired, Gift Card, Gift Card Confirmation, Manually Applied Code, Not Applied, Applied, Reactivation Code, Replaced Code, Unresponsive, Failed Verification.
-18. Marketing-Communication -> 3rd Party, Affiliate, Conditions, Discount, Gift Card, HEF, Collaboration requests, Multilevel, Product endorsement proposals, Not Received, Unsubscribe from comms, Notification, Partnership requests, Advertisement, Preferences, Promotion Education, Referral, Terms Unclear, Unresponsive, Failed Verification.
-19. Marketing-Direct Sales and Reactivation team -> Behaviour, Call Back, Late Knocking, Misinformation, Non-Customer, Unresponsive, Failed Verification.
-20. Marketing - Referral -> Existing Customer, Freebie, HelloShare, New Customer, Recipient, Referral Credit, Referral Credit Not Received, Sign-up Issues, Unresponsive, Failed Verification.
-21. Marketing-Voucher Fraud -> Exception, Honoured, Not Honoured, Fraud, Freebie Fraud, Previous Tenant, Voucher Fraud Cancellation, Unresponsive, Failed Verification.
-22. Other Connection Issue -> Connection issue, Disconnected, Unresponsive, Failed Verification.
-23. Other-Non-customer query -> Event, POC Request, Passed On Details, Unresponsive, Failed Verification.
-24. Other-Sustainability/Sourcing -> Complaint, Compost, Food Info, Free Range, Ice Pack Disposal, Ingredient, Meet Alternative, Organic, Packaging, Plastic, Recycling, Supplier, Waste, Unresponsive, Failed Verification.
-25. Payments-Charge breakdown -> AddOn, Breakdown, Charge, Confirmed Payment, Delivery Fee, Double Charge, Extras, Incorrect Charge, Payment Breakdown, Premium, Region Fee, Standard Shipping, Surcharge, Unauthorized Charge, Unresponsive, Failed Verification.
-26. Payments-Credit/Refund -> Credit, Credit Confirmation, Refund, Refund Confirmation, Unresponsive, Failed Verification.
-27. Payments-Outstanding/Dunning -> Chargeback, Failed Payment, Insufficient Funds, Outstanding Balance, Overpaid, Payment Method, Payments Schedule, Proof Of Payment, Waive, Dunning, Unresponsive, Failed Verification.
-
-  STRICT: ENGLISH ONLY. BE VERY CONCISE.
-  
-  Format exactly like this:
-  Wrap Code: [Insert appropriate Wrap Code from the list above]
-
-  K: [Insert appropriate Keyword from the list above for the chosen Wrap Code]
-  I: [Issue - max 10 words]
-  R: [Resolution - 1 to 2 short sentences outlining action taken. Use "I".]
-  O: [Other Information or Box ID if available, otherwise n/a]
-  
-  CHAT: ${input}`;
-
-  const payload = {
-    contents: [{ parts: [{ text: promptText }] }]
-  };
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
+    // Logic: Look for specific keywords to assign the right KIRO template
+    if (input.includes("cancel") || input.includes("stop") || input.includes("close")) {
+        matchedCode = "2. Account Cancellation Customer Not Retained";
+        matchedK = "Account Management issues";
+        matchedI = "Customer requested account cancellation";
+        matchedR = "Cancelled account as requested and informed customer.";
+    } else if (input.includes("refund") || input.includes("charge") || input.includes("money") || input.includes("bill") || input.includes("paid")) {
+        matchedCode = "26. Payments-Credit/Refund";
+        matchedK = "Refund";
+        matchedI = "Customer querying charge / requesting refund";
+        matchedR = "Reviewed account details and processed refund back to original payment method.";
+    } else if (input.includes("missing") || input.includes("forgot") || input.includes("didn't receive") || input.includes("not in box")) {
+        matchedCode = "13. Complaint-Pick & Pack";
+        matchedK = "Missing";
+        matchedI = "Customer reported missing ingredients or meal";
+        matchedR = "Added appropriate credit for missing items and reported to Pick & Pack team.";
+    } else if (input.includes("late") || input.includes("delay") || input.includes("where is my box") || input.includes("hasn't arrived")) {
+        matchedCode = "11. Complaint-Logistics-Early/Late";
+        matchedK = "Late 1 Day";
+        matchedI = "Customer checking on delayed delivery";
+        matchedR = "Checked tracking, informed customer of delay, and provided options.";
+    } else if (input.includes("sick") || input.includes("ill") || input.includes("food poisoning") || input.includes("hospital") || input.includes("doctor")) {
+        matchedCode = "9. Complaint-Food Safety";
+        matchedK = "Food Poisoning";
+        matchedI = "Customer reported feeling unwell after eating a meal";
+        matchedR = "Escalated to Food Safety team immediately and followed safety protocol.";
+    } else if (input.includes("damaged") || input.includes("warm") || input.includes("spilled") || input.includes("broken") || input.includes("open")) {
+        matchedCode = "14. Complaint-Quality";
+        matchedK = "Damage";
+        matchedI = "Customer reported damaged or warm box items";
+        matchedR = "Reported quality issue internally and provided appropriate compensation.";
+    } else if (input.includes("change address") || input.includes("delivery day") || input.includes("update")) {
+        matchedCode = "8. Account-Update account/subscription details";
+        matchedK = "Update";
+        matchedI = "Customer requesting to update subscription details";
+        matchedR = "Updated account details successfully per customer request.";
     }
 
-    const data = await response.json();
-    const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text || "⚠️ AI returned an empty response.";
+    // Format the final KIRO note
+    const resultText = `Wrap Code: ${matchedCode}\n\nK: ${matchedK}\nI: ${matchedI}\nR: ${matchedR}\nO: n/a`;
 
     document.getElementById('aiLoading').style.display = 'none';
     document.getElementById('kiroBtn').disabled = false;
     out.innerText = resultText;
     out.style.display = 'block';
+    document.getElementById('copyAiBtn').style.display = 'block';
     
-    if(!resultText.includes("⚠️")) {
-      document.getElementById('copyAiBtn').style.display = 'block';
-    }
-
-  } catch (error) {
-    document.getElementById('aiLoading').style.display = 'none';
-    document.getElementById('kiroBtn').disabled = false;
-    
-    if (error.message.includes("403") || error.message.includes("400")) {
-      localStorage.removeItem("gemini_api_key");
-      out.innerText = "🛑 API Key Error. Your saved key was invalid or disabled by Google. It has been cleared. Please try generating again to enter a new key.";
-    } else {
-      out.innerText = "🛑 Error connecting to Gemini. Please check your network.\n\nDetails: " + error.message;
-    }
-    
-    out.style.display = 'block';
-  }
+  }, 800); // 0.8 second delay
 }
 
 function copyAiText() {
@@ -1219,11 +1182,6 @@ function copyAiText() {
     btn.style.background = "var(--white)";
     btn.style.color = "var(--sahwrap-border)";
   }, 2000);
-}
-
-function clearApiKey() {
-  localStorage.removeItem("gemini_api_key");
-  alert("Your saved API key has been removed. You will be prompted for it next time you generate a note.");
 }
 
 function resetAIUI() {
