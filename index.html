@@ -35,7 +35,7 @@
     --bg-hover: #21262d;
   }
 
-  /* Region Specific Accents (Applied via JavaScript) */
+  /* Region Specific Accents */
   body.region-smesarah { --accent: #ec4899; } /* Pink */
   body.region-nordics { --accent: #3b82f6; }  /* Blue */
   body.region-dach { --accent: #ef4444; }     /* Red */
@@ -43,7 +43,6 @@
   body.region-factorde { --accent: #f59e0b; } /* Amber */
   body.region-factordk { --accent: #8b5cf6; } /* Purple */
   body.region-factorse { --accent: #d946ef; } /* Fuchsia */
-  body.region-sahwrap { --accent: #14b8a6; }  /* Teal for AI Tool */
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -92,6 +91,9 @@
     cursor: pointer;
     margin-left: 16px;
     transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
   .themeToggleBtn:hover { background: var(--bg-hover); border-color: var(--accent); }
 
@@ -172,30 +174,30 @@
   
   .copyBtn { position: absolute; top: 20px; right: 24px; background: var(--bg-main); border: 1px solid var(--border); border-radius: 6px; padding: 6px 16px; font-size: 13px; font-weight: 600; color: var(--text-muted); cursor: pointer; font-family: inherit; transition: all 0.2s ease; }
   .copyBtn:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
-  .copyBtn.copied { background: #10b981; color: #fff; border-color: #10b981; }
   
   .searchBar { display: flex; align-items: center; gap: 12px; padding: 24px 36px; background: var(--bg-main); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
   .searchBar input { flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 14px 20px; font-size: 15px; font-family: inherit; background: var(--bg-card); color: var(--text-main); outline: none; transition: all 0.2s ease; }
   .searchBar input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--bg-hover); }
   .noResults { text-align: center; color: var(--text-muted); padding: 80px; font-size: 15px; display: none; font-weight: 500; }
 
-  /* KIRO Tool CSS */
-  .sahwrap-wrapper { max-width: 650px; margin: 0 auto; font-family: 'Quicksand', sans-serif; background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-  .sahwrap-title { color: var(--accent); font-size: 22px; font-weight: 700; margin-bottom: 24px; text-align: center; letter-spacing: 0.5px; }
-  .sahwrap-label { color: var(--text-muted); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; display: block; }
-  .sahwrap-textarea { width: 100%; box-sizing: border-box; background: var(--bg-main); border: 1px solid var(--border); border-radius: 12px; padding: 16px; height: 160px; resize: none; font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 14px; color: var(--text-main); outline: none; margin-bottom: 20px; transition: border-color 0.2s; }
+  /* Embedded KIRO Tool CSS */
+  .sahwrap-wrapper { font-family: 'Quicksand', sans-serif; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+  .sahwrap-title { color: var(--text-muted); font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  
+  .sahwrap-textarea { width: 100%; box-sizing: border-box; background: var(--bg-main); border: 1px solid var(--border); border-radius: 8px; padding: 16px; resize: none; font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 14px; color: var(--text-main); outline: none; transition: border-color 0.2s; }
   .sahwrap-textarea:focus { border-color: var(--accent); background: var(--bg-card); }
   
-  .sahwrap-btn-action { width: 100%; background: var(--accent); color: white; border: none; border-radius: 12px; padding: 14px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.2s; font-family: 'Quicksand', sans-serif; margin-bottom: 20px; }
-  .sahwrap-btn-action:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(20, 184, 166, 0.2); opacity: 0.9; }
-  .sahwrap-btn-action:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+  .sahwrap-btn-action { background: var(--accent); color: white; border: none; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.2s; font-family: 'Quicksand', sans-serif; display: flex; align-items: center; justify-content: center; }
+  .sahwrap-btn-action:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+  .sahwrap-btn-action:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; }
   
-  .sahwrap-output { background: var(--bg-main); border: 1px solid var(--accent); border-radius: 12px; padding: 20px; text-align: left; font-size: 14.5px; color: var(--text-main); white-space: pre-wrap; display: none; margin-bottom: 20px; line-height: 1.6; font-weight: 500; }
-  .sahwrap-btn-copy { width: 100%; background: transparent; color: var(--accent); border: 2px solid var(--accent); border-radius: 12px; padding: 14px; font-weight: 700; font-size: 15px; cursor: pointer; display: none; transition: 0.2s; font-family: 'Quicksand', sans-serif; }
+  .sahwrap-output { background: var(--bg-main); border: 1px solid var(--accent); border-radius: 8px; padding: 16px; text-align: left; font-size: 14px; color: var(--text-main); white-space: pre-wrap; display: none; line-height: 1.6; font-weight: 500; }
+  
+  .sahwrap-btn-copy { background: transparent; color: var(--accent); border: 2px solid var(--accent); font-weight: 700; font-size: 14px; cursor: pointer; display: none; transition: 0.2s; font-family: 'Quicksand', sans-serif; display: none; align-items: center; justify-content: center; }
   .sahwrap-btn-copy:hover { background: var(--accent); color: white; }
   
-  .sahwrap-reset { color: var(--text-muted); font-size: 13px; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-block; transition: color 0.2s ease; text-align: center; width: 100%; }
-  .sahwrap-reset:hover { color: var(--text-main); }
+  .sahwrap-reset { color: var(--text-muted); font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: color 0.2s ease, border-color 0.2s ease; }
+  .sahwrap-reset:hover { color: var(--text-main); border-color: var(--text-main); }
 
   /* 5-Box Grid Layout */
   .smeBoxGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 8px; }
@@ -223,7 +225,7 @@
   .clockTime { font-size: 13.5px; font-weight: 600; color: var(--text-main); font-variant-numeric: tabular-nums; letter-spacing: 0.5px; text-align: right; }
   
   /* Affirmation Banner */
-  .affirmationBanner { margin-top: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+  .affirmationBanner { margin-top: 0; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
   .affirmationBannerTitle { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
   .affirmationRotate { display: flex; align-items: center; gap: 12px; }
   .affirmationHighlight { flex: 1; background: var(--bg-main); border: 1px solid var(--border); border-radius: 8px; padding: 14px 20px; font-size: 14px; font-weight: 600; color: var(--accent); text-align: center; letter-spacing: 0.2px; line-height: 1.5; animation: fadeQuote 0.8s ease; }
@@ -250,7 +252,6 @@
     <button class="ctab" data-region="factorde" onclick="switchRegion('factorde')"><span class="ctabLabel">FACTOR DE</span><span class="ctabTime" id="tab-time-factorde"></span></button>
     <button class="ctab" data-region="factordk" onclick="switchRegion('factordk')"><span class="ctabLabel">FACTOR DK</span><span class="ctabTime" id="tab-time-factordk"></span></button>
     <button class="ctab" data-region="factorse" onclick="switchRegion('factorse')"><span class="ctabLabel">FACTOR SE</span><span class="ctabTime" id="tab-time-factorse"></span></button>
-    <button class="ctab" style="margin-left: 12px; border-left: 1px solid var(--border);" data-region="sahwrap" onclick="switchRegion('sahwrap')"><span class="ctabLabel">✨ KIRO AI</span><span class="ctabTime">Generator</span></button>
   </div>
 </div>
 
@@ -260,6 +261,7 @@
   <div class="content">
 
     <div class="policyBar active" id="policySmesarah">
+      
       <div class="affirmationBanner">
         <div class="affirmationBannerTitle">✨ Focus Area</div>
         <div class="affirmationRotate">
@@ -267,6 +269,7 @@
           <div class="affirmationHighlight" id="affirmationQuote"></div>
           <button class="affirmationNavBtn" onclick="nextQuote()">&#8594;</button>
         </div>
+        
         <div class="smeBoxGrid">
           <div class="smeBox smeBox-affirm"><div class="smeBoxLabel">✦ Affirmation</div><div class="smeBoxText">I am calm, I am capable, and I handle every case with care. I know my spiels. I know my policies. I am prepared.</div></div>
           <div class="smeBox smeBox-mindset"><div class="smeBoxLabel">🧠 Mindset</div><div class="smeBoxText">A frustrated customer does not mean a bad day. It means someone needs your help. You cannot control their mood, but you control your response.</div></div>
@@ -284,7 +287,31 @@
           </div>
         </div>
       </div>
-    </div>
+
+      <div class="sahwrap-wrapper" style="margin-top: 24px;">
+        <div class="sahwrap-title">🤖 Offline KIRO Generator</div>
+        
+        <div style="display: flex; gap: 20px; align-items: stretch; flex-wrap: wrap;">
+          
+          <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 12px;">
+            <textarea id="chatInput" class="sahwrap-textarea" style="height: 120px; margin-bottom: 0;" placeholder="Paste the customer's chat or query here..."></textarea>
+            <div style="display: flex; gap: 12px;">
+              <button class="sahwrap-btn-action" id="kiroBtn" style="margin-bottom: 0; flex: 2; border-radius: 8px; padding: 12px;" onclick="generateKiro()">Generate Notes</button>
+              <button class="sahwrap-reset" style="margin-bottom: 0; flex: 1; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-main); padding: 12px;" onclick="resetAIUI()">Clear</button>
+            </div>
+          </div>
+
+          <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 12px;">
+            <div id="aiLoading" style="color: var(--accent); font-style: italic; font-weight: 700; font-size: 14px; display: none; padding: 16px; border: 1px dashed var(--accent); border-radius: 8px; text-align: center; height: 120px; align-content: center;">Scanning chat for keywords... 🔍</div>
+            
+            <div id="aiOutput" class="sahwrap-output" style="margin-bottom: 0; height: 120px; overflow-y: auto;"></div>
+            
+            <button class="sahwrap-btn-copy" id="copyAiBtn" style="margin-bottom: 0; border-radius: 8px; padding: 12px;" onclick="copyAiText()">Copy Notes</button>
+          </div>
+
+        </div>
+      </div>
+      </div>
 
     <div class="policyBar" id="policyNordics"><div class="barTitle">NORDICS Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Deadline Sat/Sun delivery</div><div class="policyValue">Tuesday 23:59 the week prior</div></div><div class="policyCell"><div class="policyLabel">Norway Delivery</div><div class="policyValue">7 days of the week</div></div><div class="policyCell"><div class="policyLabel">Denmark Payment</div><div class="policyValue">Klarna, Visa, Mastercard, PayPal</div></div><div class="policyCell"><div class="policyLabel">Sweden Delivery Fee</div><div class="policyValue">49 SEK per box</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Always verify the customer specific deadline and delivery day in the account before quoting any details. Deadlines vary by country.</div></div>
     <div class="policyBar" id="policyDach"><div class="barTitle">DACH Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Germany Delivery</div><div class="policyValue">Usually Mon to Sat, varies by region</div></div><div class="policyCell"><div class="policyLabel">AT and CH Delivery</div><div class="policyValue">Mon to Wed, Fri (AT) / Mon to Wed (CH)</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Usually Wed 23:59 or Fri 23:59 based on delivery day</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">SEPA, PayPal, Credit Card, Klarna</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Please verify specific DACH cutoffs per customer account as they strictly depend on the chosen delivery day and region.</div></div>
@@ -292,11 +319,6 @@
     <div class="policyBar" id="policyFactorde"><div class="barTitle">FACTOR GERMANY Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Website</div><div class="policyValue">factormeals.de</div></div><div class="policyCell"><div class="policyLabel">Currency</div><div class="policyValue">EUR</div></div><div class="policyCell"><div class="policyLabel">Delivery Days</div><div class="policyValue">Check customer account</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Verify in account before quoting</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">Credit/Debit Card, PayPal, Klarna</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Always check the customer individual account for their exact deadline, delivery day, and delivery address before quoting any details. Info varies per customer.</div></div>
     <div class="policyBar" id="policyFactordk"><div class="barTitle">FACTOR DENMARK Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Website</div><div class="policyValue">factormeals.dk</div></div><div class="policyCell"><div class="policyLabel">Currency</div><div class="policyValue">DKK</div></div><div class="policyCell"><div class="policyLabel">Language</div><div class="policyValue">English (warm, direct)</div></div><div class="policyCell"><div class="policyLabel">Delivery Days</div><div class="policyValue">Check customer account</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Verify in account before quoting</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">Klarna, Visa, Mastercard, PayPal</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Danish customers tend to be direct and value transparency. Keep things honest and to the point. Always verify account details before quoting deadlines or charges.</div></div>
     <div class="policyBar" id="policyFactorse"><div class="barTitle">FACTOR SWEDEN Key Policy Reference</div><div class="policyGrid"><div class="policyCell"><div class="policyLabel">Website</div><div class="policyValue">factormeals.se</div></div><div class="policyCell"><div class="policyLabel">Currency</div><div class="policyValue">SEK</div></div><div class="policyCell"><div class="policyLabel">Language</div><div class="policyValue">English (calm, courteous)</div></div><div class="policyCell"><div class="policyLabel">Delivery Days</div><div class="policyValue">Check customer account</div></div><div class="policyCell"><div class="policyLabel">Order Deadline</div><div class="policyValue">Verify in account before quoting</div></div><div class="policyCell"><div class="policyLabel">Payment Methods</div><div class="policyValue">Klarna, Visa, Mastercard, PayPal</div></div><div class="policyCell"><div class="policyLabel">Refund Timeline</div><div class="policyValue">Up to 10 business days</div></div></div><div class="policyNote">📌 Swedish customers appreciate calm, structured communication. Be clear about processes. Always check the individual account before referencing any deadlines, charges, or plans.</div></div>
-    
-    <div class="policyBar" id="policySahwrap">
-      <div class="barTitle">🤖 KIRO Note Generator</div>
-      <div class="policyNote">📌 Paste your raw customer chat below to instantly generate a KIRO note based on offline keyword scanning. No API key needed!</div>
-    </div>
 
     <div class="searchBar" id="mainSearchBar">
       <input type="text" id="searchInput" placeholder="Search spiels" oninput="filterSpiels()"/>
@@ -310,25 +332,6 @@
     <div class="panelWrap" id="panelFactorde"></div>
     <div class="panelWrap" id="panelFactordk"></div>
     <div class="panelWrap" id="panelFactorse"></div>
-    
-    <div class="panelWrap" id="panelSahwrap">
-      <div class="sahwrap-wrapper">
-        <div class="sahwrap-title">✨ Offline KIRO Generator</div>
-        <span class="sahwrap-label">Paste Chat Interaction</span>
-        <textarea id="chatInput" class="sahwrap-textarea" placeholder="Paste the customer's chat or query here..."></textarea>
-        
-        <button class="sahwrap-btn-action" id="kiroBtn" onclick="generateKiro()">Generate Notes</button>
-        
-        <div id="aiLoading" style="color: var(--accent); font-style: italic; font-weight: 700; font-size: 14px; display: none; margin-bottom: 20px; text-align: center;">Scanning chat for keywords... 🔍</div>
-        <div id="aiOutput" class="sahwrap-output"></div>
-        
-        <button class="sahwrap-btn-copy" id="copyAiBtn" onclick="copyAiText()">Copy Notes</button>
-        
-        <div style="margin-top: 16px;">
-          <span class="sahwrap-reset" onclick="resetAIUI()">Clear & Reset</span>
-        </div>
-      </div>
-    </div>
 
   </div>
 </div>
@@ -520,9 +523,6 @@ const factordeClosing = [
   { label: "Warm Close", tag: "close", text: `It was a true pleasure helping you today! I hope you enjoy your next Factor delivery. All the best, and enjoy your meal!` }
 ];
 
-// =====================
-// FACTOR DK SPIELS
-// =====================
 const factordkOpening = [
   { label: "No Context", tag: "open", text: `Hi and welcome to Factor! My name is [Name]. Great that you reached out! What can I help you with today?` },
   { label: "With Context", tag: "open", text: `Hi and welcome to Factor! I am [Name]. I can see you are reaching out about your [subscription / delivery / payment / account / meals]. Can you tell me a little more about the situation so I can help you in the best possible way?` }
@@ -566,9 +566,6 @@ const factordkClosing = [
   { label: "Warm Close", tag: "close", text: `It was a pleasure helping you today! I hope you enjoy your next Factor delivery. Take good care of yourself, and enjoy your meal!` }
 ];
 
-// =====================
-// FACTOR SE SPIELS
-// =====================
 const factorseOpening = [
   { label: "No Context", tag: "open", text: `Hi and welcome to Factor! My name is [Name], glad you reached out! How can I help you today?` },
   { label: "With Context", tag: "open", text: `Hi and welcome to Factor! I am [Name]. I see that you are reaching out about your [subscription / delivery / payment / account / meals]. Can you tell me a little more about what happened so I can help you in the best possible way?` }
@@ -613,9 +610,6 @@ const factorseClosing = [
   { label: "Warm Close", tag: "close", text: `It was a pleasure helping you today! I hope you enjoy your next Factor delivery. Take care, and enjoy your meal!` }
 ];
 
-// =====================
-// SECTION DEFINITIONS
-// =====================
 const beneluxSections = [
   { id: "opening", icon: "👋", title: "Opening Spiels", cards: universalOpening },
   { id: "verification", icon: "🔐", title: "Verification", cards: universalVerification },
@@ -696,14 +690,13 @@ let currentRegion = 'smesarah';
 
 function switchRegion(code) {
   currentRegion = code;
-  const root = document.documentElement;
   
   // Set region class for accent color
   document.body.className = document.body.className.replace(/region-\w+/g, '');
   document.body.classList.add(`region-${code}`);
 
   const logoEl = document.getElementById('mainLogo');
-  if (code === 'smesarah' || code === 'sahwrap') {
+  if (code === 'smesarah') {
     logoEl.style.display = 'none';
   } else if (code.startsWith('factor')) {
     logoEl.style.display = 'block';
@@ -714,7 +707,7 @@ function switchRegion(code) {
   }
 
   // Handle active states
-  const allCodes = ['smesarah','nordics','dach','benelux','factorde','factordk','factorse', 'sahwrap'];
+  const allCodes = ['smesarah','nordics','dach','benelux','factorde','factordk','factorse'];
   document.querySelectorAll('.ctab').forEach((t, i) => {
     t.classList.toggle('active', allCodes[i] === code);
   });
@@ -728,18 +721,10 @@ function switchRegion(code) {
   const activePanelWrap = document.getElementById('panel' + policyId);
   if (activePanelWrap) activePanelWrap.classList.add('active');
 
-  // Handle Search and Sidebar for AI Tab
-  if (code === 'sahwrap') {
-    document.getElementById('mainSearchBar').style.display = 'none';
-    document.getElementById('noResults').style.display = 'none';
-    const sidebar = document.getElementById('sidebar');
-    sidebar.innerHTML = '<div class="sidebarSection">Offline Tool</div><div class="sidebarItem active">✨ KIRO Generator</div><div style="padding: 24px; font-size: 12px; color: var(--text-muted); line-height: 1.5;">This tool works offline by scanning your pasted chat for specific keywords to automatically generate KIRO notes.</div>';
-  } else {
-    document.getElementById('mainSearchBar').style.display = 'flex';
-    document.getElementById('searchInput').value = '';
-    renderSidebar(code);
-    filterSpiels();
-  }
+  document.getElementById('mainSearchBar').style.display = 'flex';
+  document.getElementById('searchInput').value = '';
+  renderSidebar(code);
+  filterSpiels();
 }
 
 function renderSidebar(code) {
